@@ -53,6 +53,20 @@ test('deploy_from_zip and zip finish forward the same options', async () => {
   assert.strictEqual(f.calls[0].body.isWorker, true);
 });
 
+test('runtime is validated: every dashboard value and plain alias passes, typos are rejected before any request', async () => {
+  for (const rt of ['python-django', 'php-laravel', 'elixir-phoenix', 'dotnet', 'bun', 'deno', 'kotlin-spring', 'rust-actix', 'django', 'Laravel', 'c#']) {
+    const r = await call('joytree_deploy_from_github', { name: 'x', repoUrl: 'https://github.com/a/b', runtime: rt });
+    assert.ok(!r.res.isError, rt + ' should be accepted');
+    assert.strictEqual(r.calls[0].body.runtime, rt);
+  }
+  for (const rt of ['cobol', 'djangoo', 'python-rails']) {
+    const r = await call('joytree_deploy_from_github', { name: 'x', repoUrl: 'https://github.com/a/b', runtime: rt });
+    assert.strictEqual(r.res.isError, true, rt + ' should be rejected');
+    assert.match(r.res.content[0].text, /Unknown runtime/);
+    assert.strictEqual(r.calls.length, 0);
+  }
+});
+
 module.exports = { test, tests, call, handlers, schemas, calls, useClient };
 
 if (require.main === module) {

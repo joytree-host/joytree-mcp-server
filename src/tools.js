@@ -20,7 +20,7 @@ function errorResult(err) {
 // actually set are forwarded, so server-side defaults and auto-detection
 // still apply to everything left out.
 const deployOptionsShape = {
-  runtime: z.string().optional().describe('Explicit runtime, e.g. node, python, django, go, php, laravel, ruby, java, dotnet, rust, elixir, bun, deno. Leave blank to auto-detect from the repo.'),
+  runtime: z.string().optional().describe('Runtime / framework. Leave blank to auto-detect: PHP, Python, Go, Ruby, Rust, Java/Kotlin and Elixir repos are recognised from their files, and Node is the default. .NET, Bun and Deno are NOT auto-detected, so set them explicitly. Values: node, node-nextjs, node-nestjs, bun, deno, python-django, python-flask, python-fastapi, python-generic, go-generic, go-gin, go-echo, php-laravel, php-symfony, php-generic, ruby-rails, ruby-sinatra, java-spring, java-quarkus, kotlin-spring, rust-axum, rust-actix, rust-generic, dotnet, elixir-phoenix. Plain names such as django, laravel, rails, python or go are accepted and mapped to these.'),
   workingDir: z.string().optional().describe('Sub-directory to build and run from (monorepos), e.g. apps/api'),
   isWorker: z.boolean().optional().describe('Deploy as a Background Worker: a long-running process with no public HTTP port (queue consumers, bots, schedulers). Requires startCmd.'),
   isDockerfileDeploy: z.boolean().optional().describe('Build from a Dockerfile in the repo instead of auto-detecting the framework. Implied when dockerfilePath is set.'),
@@ -39,11 +39,37 @@ const deployOptionsShape = {
   ignoredPaths: z.array(z.string()).optional().describe('Skip deploys for changes that only touch these paths'),
 };
 
+// Runtime values the JoyTree server builds from (the dashboard's Runtime /
+// Framework dropdown), plus the plain names the server maps onto them. An
+// unknown value would silently fall through to the Node.js pipeline, so
+// reject it up front with the list of valid choices.
+const RUNTIMES = [
+  'node', 'node-nextjs', 'node-nestjs', 'bun', 'deno',
+  'python-django', 'python-flask', 'python-fastapi', 'python-generic',
+  'go-generic', 'go-gin', 'go-echo',
+  'php-laravel', 'php-symfony', 'php-generic',
+  'ruby-rails', 'ruby-sinatra',
+  'java-spring', 'java-quarkus', 'kotlin-spring',
+  'rust-axum', 'rust-actix', 'rust-generic',
+  'dotnet', 'elixir-phoenix',
+];
+const RUNTIME_ALIASES = [
+  'nodejs', 'node.js', 'next', 'nextjs', 'nest', 'nestjs', 'python', 'django', 'flask', 'fastapi', 'go', 'golang', 'gin', 'echo',
+  'php', 'laravel', 'symfony', 'ruby', 'rails', 'sinatra', 'java', 'spring', 'springboot', 'spring-boot', 'quarkus', 'kotlin',
+  'rust', 'axum', 'actix', 'actix-web', 'csharp', 'c#', 'aspnet', '.net', 'asp.net', 'elixir', 'phoenix',
+];
+function checkRuntime(value) {
+  const v = String(value).trim().toLowerCase();
+  if (!v || RUNTIMES.includes(v) || RUNTIME_ALIASES.includes(v)) return;
+  throw new Error(`Unknown runtime "${value}". Use one of: ${RUNTIMES.join(', ')}. (Plain names like django, laravel, rails, python or go also work.)`);
+}
+
 function pickDeployOptions(args) {
   const out = {};
   for (const key of Object.keys(deployOptionsShape)) {
     if (args[key] !== undefined) out[key] = args[key];
   }
+  if (out.runtime !== undefined) checkRuntime(out.runtime);
   return out;
 }
 
