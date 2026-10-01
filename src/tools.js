@@ -58,18 +58,48 @@ const RUNTIME_ALIASES = [
   'php', 'laravel', 'symfony', 'ruby', 'rails', 'sinatra', 'java', 'spring', 'springboot', 'spring-boot', 'quarkus', 'kotlin',
   'rust', 'axum', 'actix', 'actix-web', 'csharp', 'c#', 'aspnet', '.net', 'asp.net', 'elixir', 'phoenix',
 ];
-function checkRuntime(value) {
+// The lists above are only a fallback. The server owns the real list and serves
+// it at GET /api/v1/runtimes, so a runtime added there works here without a
+// matching MCP release: a value the bundled list doesn't know is checked
+// against the live list before being rejected. Cached for a few minutes; if
+// the endpoint is missing (older server) or fails, the bundled verdict stands.
+const LIVE_RUNTIMES_TTL_MS = 5 * 60 * 1000;
+let liveRuntimes = null; // { at, runtimes: string[], aliases: string[] }
+function _resetRuntimeCache() { liveRuntimes = null; }
+
+async function fetchLiveRuntimes(client) {
+  if (liveRuntimes && Date.now() - liveRuntimes.at < LIVE_RUNTIMES_TTL_MS) return liveRuntimes;
+  try {
+    const r = await client.get('/api/v1/runtimes');
+    if (r && Array.isArray(r.runtimes) && r.runtimes.length) {
+      liveRuntimes = {
+        at: Date.now(),
+        runtimes: r.runtimes.map(String),
+        aliases: Object.keys(r.aliases && typeof r.aliases === 'object' ? r.aliases : {}),
+      };
+      return liveRuntimes;
+    }
+  } catch (_) { /* older server or network error: fall back to the bundled list */ }
+  return null;
+}
+
+async function checkRuntime(value, client) {
   const v = String(value).trim().toLowerCase();
   if (!v || RUNTIMES.includes(v) || RUNTIME_ALIASES.includes(v)) return;
+  const live = client ? await fetchLiveRuntimes(client) : null;
+  if (live) {
+    if (live.runtimes.includes(v) || live.aliases.includes(v)) return;
+    throw new Error(`Unknown runtime "${value}". Use one of: ${live.runtimes.join(', ')}. (Plain names like django, laravel, rails, python or go also work.)`);
+  }
   throw new Error(`Unknown runtime "${value}". Use one of: ${RUNTIMES.join(', ')}. (Plain names like django, laravel, rails, python or go also work.)`);
 }
 
-function pickDeployOptions(args) {
+async function pickDeployOptions(args, client) {
   const out = {};
   for (const key of Object.keys(deployOptionsShape)) {
     if (args[key] !== undefined) out[key] = args[key];
   }
-  if (out.runtime !== undefined) checkRuntime(out.runtime);
+  if (out.runtime !== undefined) await checkRuntime(out.runtime, client);
   return out;
 }
 
@@ -149,7 +179,7 @@ function registerJoyTreeTools(server, getClient) {
     },
     annotations: { readOnlyHint: false, destructiveHint: false },
   }, async (args, client) => textResult(await client.post('/api/v1/deploy', {
-    ...pickDeployOptions(args),
+    ...(await pickDeployOptions(args, client)),
     installCmd: args.installCmd,
     nodeVer: args.nodeVer,
     name: args.name,
@@ -180,7 +210,7 @@ function registerJoyTreeTools(server, getClient) {
     },
     annotations: { readOnlyHint: false, destructiveHint: false },
   }, async (args, client) => textResult(await client.post('/api/v1/deploy-from-zip', {
-    ...pickDeployOptions(args),
+    ...(await pickDeployOptions(args, client)),
     name: args.name,
     subdomain: args.subdomain || args.name,
     zipUrl: args.zipUrl,
@@ -250,7 +280,7 @@ function registerJoyTreeTools(server, getClient) {
     },
     annotations: { readOnlyHint: false, destructiveHint: false },
   }, async (args, client) => textResult(await client.post(`/api/v1/zip-uploads/${encodeURIComponent(args.uploadId)}/finish`, {
-    ...pickDeployOptions(args),
+    ...(await pickDeployOptions(args, client)),
     name: args.name,
     subdomain: args.subdomain || args.name,
     buildCmd: args.buildCmd,
@@ -868,4 +898,4 @@ function registerJoyTreeTools(server, getClient) {
   }, async (_args, client) => textResult(await client.get('/api/github/repos')));
 }
 
-module.exports = { registerJoyTreeTools };
+module.exports = { registerJoyTreeTools, _resetRuntimeCache };

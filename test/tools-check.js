@@ -63,7 +63,7 @@ test('runtime is validated: every dashboard value and plain alias passes, typos 
     const r = await call('joytree_deploy_from_github', { name: 'x', repoUrl: 'https://github.com/a/b', runtime: rt });
     assert.strictEqual(r.res.isError, true, rt + ' should be rejected');
     assert.match(r.res.content[0].text, /Unknown runtime/);
-    assert.strictEqual(r.calls.length, 0);
+    assert.strictEqual(r.calls.filter(c => c.method !== 'GET').length, 0); // nothing deployed (only the live-list lookup may happen)
   }
 });
 
