@@ -759,7 +759,7 @@ function registerJoyTreeTools(server, getClient) {
 
   tool('joytree_observability_alert_rule', {
     title: 'Create, update or delete an alert rule',
-    description: 'Manage alert rules. "create" needs name, metric and threshold; "update" needs ruleId plus the FULL rule (it replaces the old one); "delete" needs ruleId. A rule fires when the metric is above (">") or below ("<") the threshold over windowMinutes. Metric "down" alerts when a project or database is not running (threshold is ignored). Target is "all", "project:<id>" or "database:<id>" (ids from joytree_observability_resources). An optional https webhookUrl is called when the alert fires and resolves.',
+    description: 'Manage alert rules. "create" needs name, metric and threshold; "update" needs ruleId plus only the fields to change (the rest, including any webhook, are kept; pass webhookUrl as "" to remove it); "delete" needs ruleId. A rule fires when the metric is above (">") or below ("<") the threshold over windowMinutes. Metric "down" alerts when a project or database is not running (threshold is ignored). Target is "all", "project:<id>" or "database:<id>" (ids from joytree_observability_resources). An optional https webhookUrl is called when the alert fires and resolves.',
     inputSchema: {
       action: z.enum(['create', 'update', 'delete']),
       ruleId: z.string().optional().describe('Required for update and delete (from joytree_observability_alerts)'),
@@ -782,7 +782,20 @@ function registerJoyTreeTools(server, getClient) {
     const rule = { name: args.name, metric: args.metric, op: args.op, threshold: args.threshold, windowMinutes: args.windowMinutes, severity: args.severity, target: args.target, webhookUrl: args.webhookUrl, enabled: args.enabled };
     if (args.action === 'update') {
       if (!args.ruleId) throw new Error('ruleId is required for action "update".');
-      return textResult(await client.put(`/api/observability/rules/${enc(args.ruleId)}`, rule));
+      // The API replaces the whole rule on update (and drops the webhook if it is
+      // not re-sent), so merge the changes over the stored rule first. This
+      // endpoint returns stored rules including webhookUrl; the alerts listing
+      // does not.
+      const stored = await client.get('/api/observability/rules');
+      const current = ((stored && stored.items) || []).find(r => r.id === args.ruleId);
+      if (!current) throw new Error(`No alert rule with id "${args.ruleId}". List them with joytree_observability_alerts.`);
+      const merged = {
+        name: current.name, metric: current.metric, op: current.op, threshold: current.threshold,
+        windowMinutes: current.windowMinutes, severity: current.severity, target: current.target,
+        enabled: current.enabled, webhookUrl: current.webhookUrl || '',
+      };
+      for (const [k, v] of Object.entries(rule)) if (v !== undefined) merged[k] = v;
+      return textResult(await client.put(`/api/observability/rules/${enc(args.ruleId)}`, merged));
     }
     if (!args.name || !args.metric) throw new Error('name and metric are required for action "create".');
     if (args.metric !== 'down' && args.threshold === undefined) throw new Error('threshold is required unless metric is "down".');

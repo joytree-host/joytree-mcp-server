@@ -1,6 +1,6 @@
 'use strict';
 const assert = require('assert');
-const { test, call, handlers } = require('./tools-check');
+const { test, call, handlers, useClient } = require('./tools-check');
 
 test('observability read tools build the expected query strings', async () => {
   let r = await call('joytree_observability_summary', { range: '7d', project: 'my-app' });
@@ -30,8 +30,25 @@ test('alert_rule create / update / delete and validation', async () => {
   assert.strictEqual(r.calls[0].body.threshold, 5);
   r = await call('joytree_observability_alert_rule', { action: 'create', name: 'Down', metric: 'down' });
   assert.strictEqual(r.calls.length, 1, 'down needs no threshold');
-  r = await call('joytree_observability_alert_rule', { action: 'update', ruleId: 'ru_1', name: 'x', metric: 'cpu', threshold: 90 });
-  assert.deepStrictEqual([r.calls[0].method, r.calls[0].path], ['PUT', '/api/observability/rules/ru_1']);
+  // update merges over the stored rule so the webhook (not shown in the alerts listing) survives
+  const stored = { id: 'ru_1', name: 'High CPU', metric: 'cpu', op: '>', threshold: 80, windowMinutes: 5, severity: 'warning', enabled: true, target: 'all', webhookUrl: 'https://hooks.example/a' };
+  const puts = [];
+  useClient({
+    get: async (p) => { assert.strictEqual(p, '/api/observability/rules'); return { ok: true, items: [stored] }; },
+    put: async (p, b) => { puts.push([p, b]); return { ok: true }; },
+  });
+  try {
+    await handlers.joytree_observability_alert_rule({ action: 'update', ruleId: 'ru_1', threshold: 90 }, {});
+    assert.strictEqual(puts[0][0], '/api/observability/rules/ru_1');
+    assert.strictEqual(puts[0][1].threshold, 90);
+    assert.strictEqual(puts[0][1].webhookUrl, 'https://hooks.example/a');
+    assert.strictEqual(puts[0][1].name, 'High CPU');
+    await handlers.joytree_observability_alert_rule({ action: 'update', ruleId: 'ru_1', webhookUrl: '' }, {});
+    assert.strictEqual(puts[1][1].webhookUrl, '');
+    const missing = await handlers.joytree_observability_alert_rule({ action: 'update', ruleId: 'nope', threshold: 1 }, {});
+    assert.strictEqual(missing.isError, true);
+    assert.strictEqual(puts.length, 2);
+  } finally { useClient(null); }
   r = await call('joytree_observability_alert_rule', { action: 'delete', ruleId: 'ru_1' });
   assert.deepStrictEqual([r.calls[0].method, r.calls[0].path], ['DELETE', '/api/observability/rules/ru_1']);
   for (const args of [{ action: 'create', name: 'n' }, { action: 'create', name: 'n', metric: 'cpu' }, { action: 'delete' }, { action: 'update', name: 'n' }]) {
