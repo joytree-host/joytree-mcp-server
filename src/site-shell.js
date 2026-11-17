@@ -58,6 +58,7 @@ svg[hidden]{display:none}
 .page{max-width:880px;margin:0 auto;padding:28px 40px 56px}
 @media(max-width:860px){.page{padding:22px 20px 48px}}
 .page.wide{max-width:1180px}
+.page.wide.full{max-width:1600px}
 @media(max-width:480px){.page{padding:18px 16px 44px}}
 .eyebrow{font-size:14px;font-weight:600;color:var(--text-dim);margin:0 0 10px}
 .hero{padding-bottom:28px;border-bottom:1px solid var(--border-soft)}
@@ -161,7 +162,7 @@ function renderShell({ title, description, main, baseUrl, wide = false, extraCss
     <svg id="iconMoon" width="18" height="18" viewBox="0 0 24 24" fill="none" hidden><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
   </button>
 </div></header>
-<main class="page${wide ? ' wide' : ''}">
+<main class="page${wide ? ' wide' : ''}${wide === 'full' ? ' full' : ''}">
 ${main}
 <footer class="foot"><span>&copy; JOYTREE</span><span><a href="${base}" target="_blank" rel="noopener">joytree.site</a></span></footer>
 </main>
