@@ -5,6 +5,7 @@
 const fs = require('fs');
 const path = require('path');
 const { renderShell } = require('./site-shell');
+const { AGENT_DOCK_HTML, AGENT_DOCK_CSS, AGENT_DOCK_JS } = require('./agent-dock');
 
 const BODY = fs.readFileSync(path.join(__dirname, 'guide', 'body.html'), 'utf8');
 
@@ -222,7 +223,7 @@ const JS = `(function(){
   }
 })();`;
 
-function renderGuidePage({ baseUrl, dock = '' } = {}) {
+function renderGuidePage({ baseUrl, dock = AGENT_DOCK_HTML } = {}) {
   const main = `
 <div class="guide">
   <section class="g-hero hero">
@@ -244,8 +245,8 @@ ${BODY}
     main,
     baseUrl,
     wide: true,
-    extraCss: CSS,
-    extraScript: JS,
+    extraCss: CSS + AGENT_DOCK_CSS,
+    extraScript: JS + AGENT_DOCK_JS,
   });
 }
 

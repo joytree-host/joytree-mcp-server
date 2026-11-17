@@ -1,7 +1,7 @@
 'use strict';
 // Server-rendered OAuth "Connect JOYTREE" page, styled like the JOYTREE docs site.
 const { renderShell } = require('./site-shell');
-const { AGENTS_HTML } = require('./assets/agents');
+const { AGENT_DOCK_HTML, AGENT_DOCK_CSS, AGENT_DOCK_JS } = require('./agent-dock');
 
 const ICON = {
   deploy: '<path d="M12 16V4M7 9l5-5 5 5M4 20h16"/>',
@@ -24,12 +24,13 @@ const MAIN = `
   <p class="lede">Connect JOYTREE to your AI agent and deploy, roll back, monitor and secure your projects in plain language. No dashboards to hop between.</p>
   <div class="hero-actions">
     <a class="jt-btn" href="#connect"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.1 0l3-3a5 5 0 0 0-7.1-7.1l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.1 0l-3 3a5 5 0 0 0 7.1 7.1l1.7-1.7"/></svg>Connect</a>
+    <a class="jt-btn ghost" href="/guide">Setup guide</a>
     <a class="jt-btn ghost" href="https://docs.joytree.site" target="_blank" rel="noopener">Read the docs</a>
   </div>
 </section>
 
 <h2>Works with</h2>
-<div class="agents">${AGENTS_HTML}</div>
+${AGENT_DOCK_HTML}
 
 <div class="stats">
   <div class="stat"><b>48</b><span>tools</span></div>
@@ -41,7 +42,7 @@ const MAIN = `
 <div class="connect-card">
   <p>Paste your JOYTREE API key to finish connecting. Find it at
     <a href="__BASE__/dashboard/account" target="_blank" rel="noopener">joytree.site/dashboard/account</a>,
-    or run <code>joytree apikey show</code>.</p>
+    or run <code>joytree apikey show</code>. New to connectors? Follow the <a href="/guide">step-by-step setup guide</a>.</p>
   <form method="POST" action="/authorize/submit">
     __FIELDS__
     <input type="password" name="api_key" placeholder="jtk_..." required pattern="jtk_.+" autocomplete="off" aria-label="JOYTREE API key">
@@ -74,6 +75,8 @@ function renderConnectPage({ baseUrl, fields }) {
     description: 'Deploy, monitor and protect your JOYTREE projects from your AI agent.',
     main: MAIN,
     baseUrl,
+    extraCss: AGENT_DOCK_CSS,
+    extraScript: AGENT_DOCK_JS,
   });
   return html.split('__BASE__').join(baseUrl).split('__FIELDS__').join(fields);
 }
