@@ -2,6 +2,9 @@
 // Server-rendered OAuth "Connect JOYTREE" page, styled like the JOYTREE docs site.
 const { renderShell } = require('./site-shell');
 const { AGENT_DOCK_HTML, AGENT_DOCK_CSS, AGENT_DOCK_JS } = require('./agent-dock');
+const { GUIDE_CSS, GUIDE_JS, GUIDE_BODY } = require('./guide-page');
+
+const CONNECTOR_URL = 'https://mcp.joytree.site/mcp';
 
 const ICON = {
   deploy: '<path d="M12 16V4M7 9l5-5 5 5M4 20h16"/>',
@@ -17,34 +20,45 @@ const svg = (name) =>
 const card = (icon, title, text, tool) =>
   `<div class="grid-card"><div class="gc-icon">${svg(icon)}</div><h3>${title}</h3><p>${text}</p><code>${tool}</code></div>`;
 
-const MAIN = `
+const LINK_ICON = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.1 0l3-3a5 5 0 0 0-7.1-7.1l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.1 0l-3 3a5 5 0 0 0 7.1 7.1l1.7-1.7"/></svg>';
+
+// Sign-in card. During an OAuth hand-off (/authorize) it holds the API-key form;
+// on the plain site (/) there is no OAuth request to finish, so it shows the
+// connector address to paste into Claude instead.
+const CARD_OAUTH = `
+  <h2 class="cc-title">Connect JOYTREE to Claude</h2>
+  <p>Paste your JOYTREE API key to finish connecting. Find it at
+    <a href="__BASE__/dashboard/account" target="_blank" rel="noopener">joytree.site/dashboard/account</a>,
+    or run <code>joytree apikey show</code>. New to connectors? <a href="#guide">Follow the setup guide below</a>.</p>
+  <form method="POST" action="/authorize/submit">
+    __FIELDS__
+    <input type="password" name="api_key" placeholder="jtk_..." required pattern="jtk_.+" autocomplete="off" aria-label="JOYTREE API key">
+    <button type="submit" class="jt-btn block">${LINK_ICON}Connect</button>
+    <p class="hint">Your key is verified once, then swapped for an opaque token. Your agent never sees it again.</p>
+  </form>`;
+
+const CARD_SITE = `
+  <h2 class="cc-title">Add JOYTREE to Claude</h2>
+  <p>Add this address as a custom connector on Claude&rsquo;s Plugins page, then sign in with your JOYTREE API key when asked. It takes about two minutes.</p>
+  <div class="field"><code>${CONNECTOR_URL}</code><button type="button" data-copy="${CONNECTOR_URL}">Copy</button></div>
+  <a class="jt-btn block" href="https://claude.ai/plugins" target="_blank" rel="noopener">${LINK_ICON}Open Claude Plugins</a>
+  <p class="hint">Not sure where to click? <a href="#guide">Follow the setup guide below</a>.</p>`;
+
+const buildMain = (standalone) => `
 <section class="split">
   <div class="split-copy">
     <p class="eyebrow">Model Context Protocol</p>
     <h1>Ship from your chat.</h1>
     <p class="lede">Connect JOYTREE to your AI agent and deploy, roll back, monitor and secure your projects in plain language. No dashboards to hop between.</p>
+    <div class="hero-dock"><p class="hd-label">Works with</p>${AGENT_DOCK_HTML}</div>
     <div class="hero-actions">
-      <a class="jt-btn" href="#connect"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.1 0l3-3a5 5 0 0 0-7.1-7.1l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.1 0l-3 3a5 5 0 0 0 7.1 7.1l1.7-1.7"/></svg>Connect</a>
-      <a class="jt-btn ghost" href="/guide">Setup guide</a>
+      <a class="jt-btn" href="#connect">${LINK_ICON}${standalone ? 'Add to Claude' : 'Connect'}</a>
+      <a class="jt-btn ghost" href="#guide">Setup guide</a>
       <a class="jt-btn ghost" href="https://docs.joytree.site" target="_blank" rel="noopener">Read the docs</a>
     </div>
   </div>
-  <div class="connect-card" id="connect">
-    <h2 class="cc-title">Connect JOYTREE to Claude</h2>
-    <p>Paste your JOYTREE API key to finish connecting. Find it at
-      <a href="__BASE__/dashboard/account" target="_blank" rel="noopener">joytree.site/dashboard/account</a>,
-      or run <code>joytree apikey show</code>. New to connectors? Follow the <a href="/guide">step-by-step setup guide</a>.</p>
-    <form method="POST" action="/authorize/submit">
-      __FIELDS__
-      <input type="password" name="api_key" placeholder="jtk_..." required pattern="jtk_.+" autocomplete="off" aria-label="JOYTREE API key">
-      <button type="submit" class="jt-btn block"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.1 0l3-3a5 5 0 0 0-7.1-7.1l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.1 0l-3 3a5 5 0 0 0 7.1 7.1l1.7-1.7"/></svg>Connect</button>
-      <p class="hint">Your key is verified once, then swapped for an opaque token. Your agent never sees it again.</p>
-    </form>
-  </div>
+  <div class="connect-card" id="connect">${standalone ? CARD_SITE : CARD_OAUTH}</div>
 </section>
-
-<h2>Works with</h2>
-${AGENT_DOCK_HTML}
 
 <div class="stats">
   <div class="stat"><b>48</b><span>tools</span></div>
@@ -62,11 +76,18 @@ ${AGENT_DOCK_HTML}
   ${card('rollback', 'Rollback and CDN', 'Revert a bad release and purge the cache in one sentence.', 'joytree_rollback_deployment')}
 </div>
 
-<h2>How it works</h2>
-<div class="steps">
-  <div class="step"><span class="n">01</span><div><h3>Paste your key</h3><p>One time, right here.</p></div></div>
-  <div class="step"><span class="n">02</span><div><h3>Ask in plain language</h3><p>"Deploy my repo and show me the logs."</p></div></div>
-  <div class="step"><span class="n">03</span><div><h3>JOYTREE does the work</h3><p>Every call runs with your own permissions, nothing shared.</p></div></div>
+<div class="guide" id="guide">
+  <div class="g-hero">
+    <p class="eyebrow">Setup guide</p>
+    <h2 class="g-title">Connect JOYTREE to Claude in <em>two minutes.</em></h2>
+    <p class="lede">A step-by-step walkthrough using the real screens: add the connector, sign in once, then decide exactly what Claude may do on its own and what it must ask you about first.</p>
+    <div class="g-meta">
+      <div><b>~2 min</b><span>to connect</span></div>
+      <div><b>5 steps</b><span>start to finish</span></div>
+      <div><b>0 installs</b><span>runs in the cloud</span></div>
+    </div>
+  </div>
+${GUIDE_BODY}
 </div>
 `;
 
@@ -112,17 +133,51 @@ html[data-theme="dark"] .connect-card{box-shadow:0 24px 48px -24px rgba(0,0,0,.7
 @media(max-width:980px){.split{grid-template-columns:1fr;gap:32px;padding:20px 0 40px}.split::before{inset:-22px -20px 0 -20px}}
 @media(min-width:1500px){.connect-card{padding:32px}.cc-title{font-size:30px}}
 @media(prefers-reduced-motion:reduce){.split-copy>*,.connect-card{animation:none}.page.full .grid-card{transition:none}}
+
+/* ---- Hero dock: the "Works with" animation now lives in the hero ----- */
+.hero-dock{position:relative;isolation:isolate;margin:28px 0 0}
+.hero-dock::before{content:'';position:absolute;z-index:-1;inset:-34px -28px -30px -28px;pointer-events:none;
+  background:radial-gradient(55% 75% at 22% 50%,color-mix(in srgb,var(--link) 18%,transparent),transparent 72%);filter:blur(6px);animation:hd-drift 9s ease-in-out infinite alternate}
+@keyframes hd-drift{from{transform:translateX(-14px) scale(.96);opacity:.75}to{transform:translateX(26px) scale(1.04);opacity:1}}
+.hd-label{margin:0 0 10px;font-size:14px;font-weight:600;color:var(--text-dim)}
+.hero-dock .dock{--s:52px;--ov:-17px}
+.hero-dock .dk-pill{padding:10px 18px 10px 24px;background:color-mix(in srgb,var(--bg-raised) 78%,transparent);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);box-shadow:0 18px 36px -22px rgba(9,105,218,.55)}
+.hero-dock .dk-av svg{width:30px;height:30px}
+.hero-dock .dk-av img{height:30px}
+.hero-dock .dk-cap{font-size:15px;margin-top:12px}
+.hero-dock .dock.open .dk-av{--s:32px}
+.hero-dock .dock.open .dk-av svg{width:20px;height:20px}
+.hero-dock .dock.open .dk-av img{height:20px}
+.split-copy,.connect-card{min-width:0}
+.hero-dock .dk-row{justify-content:flex-start;gap:14px}
+.hero-dock .dock.open .dk-row{justify-content:stretch}
+@media(max-width:480px){.hero-dock .dock{--s:35px;--ov:-12px}.hero-dock .dk-av svg{width:21px;height:21px}.hero-dock .dk-av img{height:21px}.hero-dock .dk-pill{padding:6px 10px 6px 14px}.hero-dock .dk-row{gap:8px}}
+.split-copy>:nth-child(5){animation-delay:.24s}
+/* connector address in the sign-in card (plain site) */
+.connect-card .field{display:flex;align-items:stretch;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg-sunken);margin:16px 0}
+.connect-card .field code{flex:1;min-width:0;background:none;font-size:14px;padding:11px 14px;overflow-x:auto;white-space:nowrap}
+.connect-card .field button{border:0;border-left:1px solid var(--border);background:var(--bg-raised);color:var(--text);font:600 13px/1 var(--font-body);padding:0 16px;cursor:pointer}
+.connect-card .field button:hover{background:var(--bg-hover)}
+.connect-card .field button.done{background:var(--link);color:#fff}
+.connect-card a.jt-btn.block{display:flex;align-items:center;justify-content:center;gap:8px;height:44px}
+/* guide section sits under the capabilities, centred, with its own sticky contents */
+.page.full .guide{margin-top:72px;padding-top:8px;border-top:1px solid var(--border-soft)}
+.page.full .guide .g-hero{padding:44px 0 8px;max-width:1060px;margin:0 auto}
+.page.full .guide .g-title{margin:0 0 12px;padding:0;border:0;font-size:clamp(30px,4.2vw,52px);line-height:1.08;letter-spacing:-.02em}
+.page.full .guide .g-title em{font-style:italic;font-weight:500;color:var(--text-dim)}
+.page.full .guide .g-layout{max-width:1060px;margin:0 auto}
+@media(prefers-reduced-motion:reduce){.hero-dock::before{animation:none}}
 `;
 
-function renderConnectPage({ baseUrl, fields }) {
+function renderConnectPage({ baseUrl, fields = '', standalone = false }) {
   const html = renderShell({
-    title: 'Connect JOYTREE',
-    description: 'Deploy, monitor and protect your JOYTREE projects from your AI agent.',
-    main: MAIN,
+    title: standalone ? 'JOYTREE for Claude and AI agents - connect and setup guide' : 'Connect JOYTREE',
+    description: 'Deploy, monitor and protect your JOYTREE projects from your AI agent. Connect once, with a step-by-step setup guide.',
+    main: buildMain(standalone),
     baseUrl,
     wide: 'full',
-    extraCss: AGENT_DOCK_CSS + PAGE_CSS,
-    extraScript: AGENT_DOCK_JS,
+    extraCss: AGENT_DOCK_CSS + PAGE_CSS + GUIDE_CSS,
+    extraScript: AGENT_DOCK_JS + '\n' + GUIDE_JS,
   });
   return html.split('__BASE__').join(baseUrl).split('__FIELDS__').join(fields);
 }

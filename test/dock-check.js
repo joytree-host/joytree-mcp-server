@@ -2,7 +2,6 @@
 const assert = require('node:assert');
 const { AGENT_DOCK_HTML, AGENT_DOCK_CSS, AGENT_DOCK_JS, AGENT_NAMES } = require('../src/agent-dock');
 const { renderConnectPage } = require('../src/connect-page');
-const { renderGuidePage } = require('../src/guide-page');
 
 const WANT = ['Claude', 'Cursor', 'ChatGPT', 'Lovable', 'Zed', 'Cline', 'Raycast', 'Windsurf', 'Gemini', 'Antigravity'];
 assert.deepStrictEqual(AGENT_NAMES, WANT, 'ten agents, in order');
@@ -20,7 +19,7 @@ assert.ok(AGENT_DOCK_CSS.includes('prefers-reduced-motion'));
 assert.ok(AGENT_DOCK_JS.includes('prefers-reduced-motion'));
 
 // the dock is one DOM, so ids (svg gradients/masks) must not repeat on a page
-for (const [name, html] of [['connect', renderConnectPage({ baseUrl: 'https://joytree.site', fields: '' })], ['guide', renderGuidePage({ baseUrl: 'https://joytree.site' })]]) {
+for (const [name, html] of [['connect', renderConnectPage({ baseUrl: 'https://joytree.site', fields: '' })], ['site', renderConnectPage({ baseUrl: 'https://joytree.site', standalone: true })]]) {
   const ids = [...html.matchAll(/\sid="([^"]+)"/g)].map((m) => m[1]);
   const dupes = ids.filter((id, i) => ids.indexOf(id) !== i);
   assert.deepStrictEqual(dupes, [], name + ': duplicate ids ' + dupes.join(','));

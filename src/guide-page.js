@@ -1,11 +1,9 @@
 'use strict';
-// /guide -- step-by-step "connect JOYTREE to Claude" walkthrough with annotated
-// screenshots. Rendered inside the shared site shell so it inherits the topbar,
-// theme toggle and design tokens (light default, dark selectable).
+// Setup guide (now a section of the single Connect page) -- step-by-step "connect JOYTREE to Claude" walkthrough with annotated
+// screenshots. Exposes the guide's CSS, script and body so connect-page.js can
+// render it inline under the hero; /guide redirects to /#guide.
 const fs = require('fs');
 const path = require('path');
-const { renderShell } = require('./site-shell');
-const { AGENT_DOCK_HTML, AGENT_DOCK_CSS, AGENT_DOCK_JS } = require('./agent-dock');
 
 const BODY = fs.readFileSync(path.join(__dirname, 'guide', 'body.html'), 'utf8');
 
@@ -223,31 +221,4 @@ const JS = `(function(){
   }
 })();`;
 
-function renderGuidePage({ baseUrl, dock = AGENT_DOCK_HTML } = {}) {
-  const main = `
-<div class="guide">
-  <section class="g-hero hero">
-    <p class="eyebrow">Setup guide</p>
-    <h1>Connect JOYTREE to Claude in <em>two minutes.</em></h1>
-    <p class="lede">A step-by-step walkthrough using the real screens: add the connector, sign in once, then decide exactly what Claude may do on its own and what it must ask you about first.</p>
-    <div class="g-meta">
-      <div><b>~2 min</b><span>to connect</span></div>
-      <div><b>5 steps</b><span>start to finish</span></div>
-      <div><b>0 installs</b><span>runs in the cloud</span></div>
-    </div>
-    ${dock ? `<div class="g-dock-slot">${dock}</div>` : ''}
-  </section>
-${BODY}
-</div>`;
-  return renderShell({
-    title: 'Setup guide - JOYTREE MCP',
-    description: 'Step-by-step guide to connecting JOYTREE to Claude, with annotated screenshots, permission modes and troubleshooting.',
-    main,
-    baseUrl,
-    wide: true,
-    extraCss: CSS + AGENT_DOCK_CSS,
-    extraScript: JS + AGENT_DOCK_JS,
-  });
-}
-
-module.exports = { renderGuidePage };
+module.exports = { GUIDE_CSS: CSS, GUIDE_JS: JS, GUIDE_BODY: BODY };

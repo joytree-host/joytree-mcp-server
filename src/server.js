@@ -10,7 +10,7 @@ const { JoyTreeClient, BASE_URL } = require('./joytree-client');
 const { PRIVACY_POLICY_HTML } = require('./privacy-policy');
 const { registerJoyTreeTools } = require('./tools');
 const { JoyTreeOAuthProvider } = require('./oauth-provider');
-const { renderGuidePage } = require('./guide-page');
+const { renderConnectPage } = require('./connect-page');
 
 const PORT = process.env.PORT || 8787;
 const PUBLIC_URL = process.env.MCP_PUBLIC_URL || `http://localhost:${PORT}`;
@@ -112,13 +112,18 @@ app.get('/health', (_req, res) => res.status(200).json({
   uptimeSeconds: Math.round(process.uptime()),
 }));
 
-// Setup guide: how to add JOYTREE to Claude, with annotated screenshots.
-app.get(['/guide', '/guide/'], (_req, res) => {
+// One combined page: hero + "Works with" dock + sign-in/connector card + the
+// step-by-step setup guide with annotated screenshots. The OAuth hand-off at
+// /authorize renders the same page with the API-key form; here (plain site)
+// the card shows the connector address instead. /guide is kept as a redirect
+// so old links land on the guide section of the combined page.
+app.get('/', (_req, res) => {
   res.status(200).set({
     'Content-Type': 'text/html; charset=utf-8',
     'Cache-Control': 'public, max-age=300',
-  }).send(renderGuidePage({ baseUrl: BASE_URL }));
+  }).send(renderConnectPage({ baseUrl: BASE_URL, standalone: true }));
 });
+app.get(['/guide', '/guide/'], (_req, res) => res.redirect(301, '/#guide'));
 app.use('/guide/assets', express.static(path.join(__dirname, 'assets', 'guide'), {
   maxAge: '7d',
   immutable: true,

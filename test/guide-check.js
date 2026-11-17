@@ -1,13 +1,17 @@
-// /guide page: renders in the shared shell, keeps all 8 screenshots, copy fields and pin legends aligned.
+// Combined page (/ + the guide section): renders in the shared shell, keeps all 8 screenshots, copy fields and pin legends aligned.
 const assert = require('node:assert');
 const fs = require('node:fs');
 const path = require('node:path');
-const { renderGuidePage } = require('../src/guide-page');
+const { renderConnectPage } = require('../src/connect-page');
 
-const html = renderGuidePage({ baseUrl: 'https://joytree.site' });
+const html = renderConnectPage({ baseUrl: 'https://joytree.site', standalone: true });
 assert.ok(!/JoyTree/.test(html), 'writing must be JOYTREE, not JoyTree');
 assert.ok(html.includes('id="themeToggle"') && html.includes('JOYTREE<span class="brand-dot">mcp</span>'), 'shared topbar + brand');
-assert.ok(html.includes('<title>Setup guide - JOYTREE MCP</title>'));
+assert.ok(html.includes('id="guide"') && html.includes('href="#guide"'), 'guide section + hero link to it');
+assert.ok(html.indexOf('data-dock') < html.indexOf('id="guide"'), 'dock sits above the guide');
+assert.ok(html.indexOf('class="hero-dock"') < html.indexOf('class="hero-actions"'), 'dock is in the hero, above the buttons');
+assert.ok(!html.includes('<h2>Works with</h2>'), 'no second Works-with block further down');
+assert.ok(!html.includes('href="/guide"'), 'no link to a separate guide page');
 assert.ok((html.match(/<main\b/g) || []).length === 1, 'exactly one <main>');
 assert.ok(!html.includes('<!--AGENT_DOCK'), 'no unreplaced placeholders');
 

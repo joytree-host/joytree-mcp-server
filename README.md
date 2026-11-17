@@ -81,7 +81,8 @@ and wouldn't require touching the tool logic or the auth model at all.
 | Route | What it is |
 | --- | --- |
 | `/authorize` | The Connect page (OAuth sign-in with a JOYTREE API key). |
-| `/guide` | Step-by-step setup guide for Claude with 8 annotated screenshots (`src/guide-page.js`, content in `src/guide/body.html`, images in `src/assets/guide/`). |
+| `/` | One combined page: hero with the animated "Works with" agent dock, the connector address, and the step-by-step setup guide with 8 annotated screenshots (`src/connect-page.js`; guide content in `src/guide/body.html`, styles/script in `src/guide-page.js`, images in `src/assets/guide/`). `/authorize` renders the same page with the API-key form. |
+| `/guide` | Redirects to `/#guide`. |
 | `/privacy` | Privacy policy. |
 | `/health` | `{ ok, version, commit, startedAt }` -- use it after a deploy to confirm the running build. |
 
