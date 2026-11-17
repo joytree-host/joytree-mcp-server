@@ -37,7 +37,7 @@ async function main() {
     `&code_challenge_method=S256&state=${state}`;
   const authRes = await fetch(authUrl);
   const authHtml = await authRes.text();
-  console.log('2. GET /authorize:', authRes.status, authHtml.includes('Connect JoyTree') ? 'shows the key form OK' : 'UNEXPECTED');
+  console.log('2. GET /authorize:', authRes.status, authHtml.includes('Connect JOYTREE') ? 'shows the key form OK' : 'UNEXPECTED');
 
   // 3. Simulate submitting the form with a fake (but correctly-shaped) key.
   // This should fail cleanly at the "verify against the real API" step,

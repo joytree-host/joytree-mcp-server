@@ -96,7 +96,7 @@ app.post('/authorize/submit', express.urlencoded({ extended: true }), (req, res)
 app.use(mcpAuthRouter({
   provider: oauthProvider,
   issuerUrl: new URL(PUBLIC_URL),
-  resourceName: 'JoyTree',
+  resourceName: 'JOYTREE',
   scopesSupported: ['joytree'],
 }));
 
