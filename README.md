@@ -76,6 +76,19 @@ they just reconnect and paste their key again. Swapping that for
 Redis/a database later is a contained change to `src/oauth-provider.js`
 and wouldn't require touching the tool logic or the auth model at all.
 
+## Web pages
+
+| Route | What it is |
+| --- | --- |
+| `/authorize` | The Connect page (OAuth sign-in with a JOYTREE API key). |
+| `/guide` | Step-by-step setup guide for Claude with 8 annotated screenshots (`src/guide-page.js`, content in `src/guide/body.html`, images in `src/assets/guide/`). |
+| `/privacy` | Privacy policy. |
+| `/health` | `{ ok, version, commit, startedAt }` -- use it after a deploy to confirm the running build. |
+
+All pages render through `src/site-shell.js` (docs-site look, light/dark toggle). The animated "Works with" dock lives in `src/agent-dock.js` and reads the logos from `src/assets/agents.js`.
+
+Deploys are manual, not triggered by a push: after merging to `main`, redeploy and check that `/health` reports the new `commit` and `version`.
+
 ## Running locally
 
 ```bash
