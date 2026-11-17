@@ -65,11 +65,14 @@ h1{font-family:var(--font-display);color:var(--text);font-size:clamp(34px,5.4vw,
 .lede{font-size:18px;color:var(--text-dim);margin:0;max-width:62ch}
 @media(max-width:480px){.lede{font-size:16px}}
 .hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
-.hero-btn{display:inline-flex;align-items:center;justify-content:center;height:40px;padding:0 18px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;transition:background .12s,border-color .12s}
-.hero-btn.primary{background:var(--text);color:var(--bg);border:1px solid var(--text)}
-.hero-btn.primary:hover{background:color-mix(in srgb,var(--text) 82%,var(--bg))}
-.hero-btn.ghost{background:transparent;color:var(--text);border:1px solid var(--border-hi)}
-.hero-btn.ghost:hover{background:var(--bg-hover)}
+.jt-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:34px;padding:0 18px;border:1.5px solid #047857;border-radius:10px;background:#059669;color:#fff;font:600 14px/1 var(--font-body);text-decoration:none;white-space:nowrap;cursor:pointer;box-shadow:0 1px 0 rgba(255,255,255,.25) inset,0 2px 0 #047857;transition:background-color .15s ease,box-shadow .15s ease,transform .15s ease;-webkit-tap-highlight-color:transparent}
+.jt-btn svg{flex:none;width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.jt-btn:hover{background:#047857;border-color:#065f46;box-shadow:0 2px 0 #065f46;transform:translateY(-1px)}
+.jt-btn:active{transform:translateY(1px);box-shadow:0 0 0 #047857}
+.jt-btn.block{width:100%}
+.jt-btn.ghost{background:var(--bg-raised);color:var(--text);border-color:var(--border-hi);box-shadow:0 2px 0 var(--border)}
+.jt-btn.ghost:hover{background:var(--bg-hover);border-color:var(--border-hi);box-shadow:0 2px 0 var(--border-hi)}
+@media(prefers-reduced-motion:reduce){.jt-btn{transition:none}}
 h2{font-family:var(--font-display);font-size:24px;font-weight:600;line-height:1.25;margin:40px 0 16px;padding-bottom:8px;border-bottom:1px solid var(--border-soft);scroll-margin-top:calc(var(--topbar-h) + 16px)}
 h3{margin:0 0 4px;font-size:16px;font-weight:600}
 p{margin:0 0 12px}
@@ -105,8 +108,6 @@ code{font-family:var(--font-mono);font-size:85%;background:var(--code-inline);pa
 .connect-card input[type=password]{display:block;width:100%;height:40px;padding:0 12px;margin:0 0 12px;font-size:16px;font-family:var(--font-mono);color:var(--text);background:var(--bg-raised);border:1px solid var(--border);border-radius:var(--radius-sm);outline:none;transition:border-color .12s,box-shadow .12s}
 .connect-card input[type=password]:hover{border-color:var(--border-hi)}
 .connect-card input[type=password]:focus{border-color:var(--focus);box-shadow:0 0 0 3px color-mix(in srgb,var(--focus) 35%,transparent)}
-.connect-card button[type=submit]{width:100%;height:40px;border-radius:8px;border:1px solid var(--text);background:var(--text);color:var(--bg);font-size:14px;font-weight:600;cursor:pointer;transition:background .12s}
-.connect-card button[type=submit]:hover{background:color-mix(in srgb,var(--text) 82%,var(--bg))}
 .hint{margin:12px 0 0;font-size:13px;color:var(--text-dim)}
 
 /* Steps */

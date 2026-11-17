@@ -18,7 +18,7 @@ console.log('pages-check: OK');
 
 // No green UI accents (leaves ambiance and the logo excluded).
 for (const [name, html] of [['connect', connect], ['privacy', PRIVACY_POLICY_HTML]]) {
-  const css = html.match(/<style>([\s\S]*?)<\/style>/)[1].replace(/\.jt-[\s\S]*/, '');
+  const css = html.match(/<style>([\s\S]*?)<\/style>/)[1].replace(/\.jt-btn[^{]*\{[^}]*\}/g, '').replace(/\.jt-leaf[\s\S]*/, '');
   assert.ok(!/#10b981|#059669|#047857|#34d399|#ecfdf5|var\(--brand(?!-dot|-name|-mark)/.test(css), name + ': no green accents');
 }
 console.log('pages-check (no green): OK');

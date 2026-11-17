@@ -23,8 +23,8 @@ const MAIN = `
   <h1>Ship from your chat.</h1>
   <p class="lede">Connect JOYTREE to your AI agent and deploy, roll back, monitor and secure your projects in plain language. No dashboards to hop between.</p>
   <div class="hero-actions">
-    <a class="hero-btn primary" href="#connect">Connect</a>
-    <a class="hero-btn ghost" href="https://docs.joytree.site" target="_blank" rel="noopener">Read the docs</a>
+    <a class="jt-btn" href="#connect"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.1 0l3-3a5 5 0 0 0-7.1-7.1l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.1 0l-3 3a5 5 0 0 0 7.1 7.1l1.7-1.7"/></svg>Connect</a>
+    <a class="jt-btn ghost" href="https://docs.joytree.site" target="_blank" rel="noopener">Read the docs</a>
   </div>
 </section>
 
@@ -45,7 +45,7 @@ const MAIN = `
   <form method="POST" action="/authorize/submit">
     __FIELDS__
     <input type="password" name="api_key" placeholder="jtk_..." required pattern="jtk_.+" autocomplete="off" aria-label="JOYTREE API key">
-    <button type="submit">Connect</button>
+    <button type="submit" class="jt-btn block"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.1 0l3-3a5 5 0 0 0-7.1-7.1l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.1 0l-3 3a5 5 0 0 0 7.1 7.1l1.7-1.7"/></svg>Connect</button>
     <p class="hint">Your key is verified once, then swapped for an opaque token. Your agent never sees it again.</p>
   </form>
 </div>
