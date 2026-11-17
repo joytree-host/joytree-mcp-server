@@ -2,8 +2,7 @@
 // Shared page shell for the Connect page and the Privacy Policy. Mirrors the
 // JOYTREE docs site (docs.joytree.site): GitHub (Primer) palette, Source Serif
 // headings, sunken topbar with a theme toggle, bordered 6px cards, emerald
-// accent, and the falling-leaves ambiance. Light is the default, dark is selectable.
-const { LEAF_CSS, LEAF_SYMBOLS, LEAF_JS } = require('./assets/leaves');
+// accent, Light is the default, dark is selectable.
 const { LOGO_DATA_URI } = require('./assets/logo');
 
 const CSS = `
@@ -128,8 +127,7 @@ code{font-family:var(--font-mono);font-size:85%;background:var(--code-inline);pa
 .doc p,.doc li{font-size:16px}
 .doc .contact{border:1px solid var(--border);background:var(--bg-sunken);border-radius:var(--radius-sm);padding:16px}
 .doc .contact p{margin:0}
-/*LEAVES*/
-`.replace('/*LEAVES*/', LEAF_CSS);
+`;
 
 const THEME_BOOT = `(function(){var s=null;try{s=localStorage.getItem('joytree-theme')}catch(e){}document.documentElement.setAttribute('data-theme',s==='dark'?'dark':'light')})();`;
 const THEME_TOGGLE = `(function(){var b=document.getElementById('themeToggle');if(!b)return;var sun=document.getElementById('iconSun'),moon=document.getElementById('iconMoon');function paint(){var d=document.documentElement.getAttribute('data-theme')==='dark';sun.hidden=d;moon.hidden=!d;}paint();b.addEventListener('click',function(){var d=document.documentElement.getAttribute('data-theme')==='dark';var n=d?'light':'dark';document.documentElement.setAttribute('data-theme',n);try{localStorage.setItem('joytree-theme',n)}catch(e){}paint();});})();`;
@@ -164,9 +162,6 @@ function renderShell({ title, description, main, baseUrl }) {
 ${main}
 <footer class="foot"><span>&copy; JOYTREE</span><span><a href="${base}" target="_blank" rel="noopener">joytree.site</a></span></footer>
 </main>
-<svg style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true"><defs>${LEAF_SYMBOLS}</defs></svg>
-<div class="jt-leaves-fall" id="jtLeavesFall" aria-hidden="true"></div>
-<script>${LEAF_JS}</script>
 <script>${THEME_TOGGLE}</script>
 </body></html>`;
 }
