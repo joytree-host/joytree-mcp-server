@@ -91,15 +91,17 @@ code{font-family:var(--font-mono);font-size:85%;background:var(--code-inline);pa
 
 /* Cards */
 .grid-cards{display:grid;grid-template-columns:1fr;gap:16px;margin:0}
-@media(min-width:700px){.grid-cards{grid-template-columns:repeat(2,minmax(0,1fr))}.grid-cards.three{grid-template-columns:repeat(3,minmax(0,1fr))}}
-.grid-cards.three{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+@media(min-width:700px){.grid-cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .grid-card{border:1px solid var(--border);border-radius:var(--radius-sm);padding:16px;background:var(--bg-raised);display:block}
 .grid-card .gc-icon{color:var(--text-dim);margin-bottom:12px;display:flex}
 .grid-card p{margin:0 0 10px;font-size:14px;color:var(--text-dim);line-height:1.5}
 .grid-card code{font-size:12px}
-.stat b{display:block;font-family:var(--font-display);font-size:22px;font-weight:600;line-height:1.2;margin-bottom:2px}
-.stat span{font-size:14px;color:var(--text-dim)}
-@media(max-width:480px){.grid-cards.three{gap:8px}.grid-cards.three .grid-card{padding:12px}.stat b{font-size:17px;white-space:nowrap}.stat span{font-size:13px}}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin-top:16px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg-raised);overflow:hidden}
+.stat{padding:14px 16px;min-width:0}
+.stat + .stat{border-left:1px solid var(--border-soft)}
+.stat b{display:block;font-family:var(--font-display);font-size:22px;font-weight:600;line-height:1.2;margin-bottom:2px;white-space:nowrap}
+.stat span{display:block;font-size:14px;color:var(--text-dim)}
+@media(max-width:480px){.stat{padding:12px}.stat b{font-size:17px}.stat span{font-size:13px}}
 
 /* Connect form */
 .connect-card{border:1px solid var(--border);border-radius:var(--radius-sm);padding:16px;background:var(--bg-raised)}

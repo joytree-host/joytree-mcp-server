@@ -31,10 +31,10 @@ const MAIN = `
 <h2>Works with</h2>
 <div class="agents">${AGENTS_HTML}</div>
 
-<div class="grid-cards three" style="margin-top:16px">
-  <div class="grid-card stat"><b>48</b><span>tools</span></div>
-  <div class="grid-card stat"><b>OAuth 2.1</b><span>standard sign-in</span></div>
-  <div class="grid-card stat"><b>1 key</b><span>scoped to you</span></div>
+<div class="stats">
+  <div class="stat"><b>48</b><span>tools</span></div>
+  <div class="stat"><b>OAuth 2.1</b><span>standard sign-in</span></div>
+  <div class="stat"><b>1 key</b><span>scoped to you</span></div>
 </div>
 
 <h2 id="connect">Connect JOYTREE to Claude</h2>
