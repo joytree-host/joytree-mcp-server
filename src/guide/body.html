@@ -1,0 +1,286 @@
+<div class="g-layout">
+    <aside class="g-toc"><div class="stick">
+      <small>On this page</small>
+      <a href="#short">The short version</a>
+      <a href="#before">Before you start</a>
+      <a href="#s1">1 &middot; Open Plugins</a>
+      <a href="#s2">2 &middot; Add the connector</a>
+      <a href="#s3">3 &middot; Confirm it works</a>
+      <a href="#s4">4 &middot; Set permissions</a>
+      <a href="#s5">5 &middot; Manage the connector</a>
+      <a href="#try">Try it</a>
+      <a href="#help">Troubleshooting</a>
+      <a href="#security">Security</a>
+    </div></aside>
+
+    <div class="g-main">
+
+      <section class="s" id="short">
+        <div class="sh"><span class="n">TL;DR</span><h2>The short version</h2></div>
+        <p>In Claude, open <strong>Plugins</strong>, choose <strong>Add</strong> and add a custom connector with this address:</p>
+        <div class="field"><code>https://mcp.joytree.site/mcp</code><button type="button" data-copy="https://mcp.joytree.site/mcp">Copy</button></div>
+        <p>Sign in with your JOYTREE API key when asked, then check that the status reads <strong>Connected</strong>. That&rsquo;s it. Everything below explains each screen and how to keep Claude on a short leash.</p>
+        <div class="flow">
+          <div><b>01 Add</b><span>Paste the address into Claude&rsquo;s Plugins page.</span></div>
+          <div><b>02 Sign in</b><span>Paste your <code>jtk_</code> key once.</span></div>
+          <div><b>03 Ask</b><span>&ldquo;Deploy my repo and show me the logs.&rdquo;</span></div>
+        </div>
+      </section>
+
+      <section class="s" id="before">
+        <div class="sh"><span class="n">00</span><h2>Before you start</h2></div>
+        <ul class="plain">
+          <li><strong>A JOYTREE account and API key.</strong> Find your key at <a href="https://joytree.site/dashboard/account" target="_blank" rel="noopener">joytree.site/dashboard/account</a>, or run <code>joytree apikey show</code>. It starts with <code>jtk_</code>.</li>
+          <li><strong>A Claude account</strong> with access to the <strong>Plugins</strong> page, where connectors are managed.</li>
+        </ul>
+        <div class="note"><b>Using Cursor, ChatGPT or Lovable?</b><p>The same server address works in any MCP-compatible client. The screens below are Claude&rsquo;s, but the steps are the same idea: add a remote MCP server, sign in with your key.</p></div>
+      </section>
+
+      <!-- STEP 1 -->
+      <section class="s" id="s1">
+        <div class="sh"><span class="n">STEP 01</span><h2>Open Plugins</h2></div>
+        <p>In Claude, choose <strong>Plugins</strong> in the left sidebar. This is the home of every connector, from Google Drive to your own custom ones. Press <strong>Add</strong> in the top-right corner to start a new connector.</p>
+        <figure>
+          <div class="frame">
+            <div class="cap"><span>Claude <i>/</i> Plugins</span><button type="button" class="zoom">Enlarge</button></div>
+            <div class="stage">
+              <img src="/guide/assets/01-plugins.webp" width="1077" height="636" loading="lazy" alt="Claude's Plugins page showing the Add button and JOYTREE listed under Your plugins as a custom connector at mcp.joytree.site">
+              <i class="pin" style="left:97.2%;top:16.2%">1</i>
+              <i class="pin" style="left:2.4%;top:31.8%">2</i>
+            </div>
+          </div>
+          <ol class="legend">
+            <li><span><b>Add</b> &mdash; opens the menu for adding a connector. Choose the custom connector option.</span></li>
+            <li><span><b>Your plugins</b> &mdash; once connected, JOYTREE appears here as a <em>Custom connector</em> on <code>mcp.joytree.site</code>.</span></li>
+          </ol>
+        </figure>
+      </section>
+
+      <!-- STEP 2 -->
+      <section class="s" id="s2">
+        <div class="sh"><span class="n">STEP 02</span><h2>Add the connector</h2></div>
+        <p>Fill in the custom connector form with the values below. Wording on Claude&rsquo;s side can differ slightly between plans and releases, but the two things that matter never change.</p>
+        <div class="scroll"><table class="spec">
+          <thead><tr><th>Field</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr><td>Name</td><td><code>JOYTREE</code> (any label you like)</td></tr>
+            <tr><td>Server URL</td><td><code>https://mcp.joytree.site/mcp</code></td></tr>
+            <tr><td>Client ID / secret</td><td>Leave blank. Claude registers itself automatically (OAuth 2.1).</td></tr>
+          </tbody>
+        </table></div>
+        <p>Confirm, and Claude opens the <strong>Connect JOYTREE</strong> page. Paste your API key and press <strong>Connect</strong>. You do this once.</p>
+        <div class="note"><b>Your key stays private</b><p>JOYTREE verifies the key a single time, then swaps it for an opaque token. Claude never sees your raw key again.</p></div>
+      </section>
+
+      <!-- STEP 3 -->
+      <section class="s" id="s3">
+        <div class="sh"><span class="n">STEP 03</span><h2>Confirm it works</h2></div>
+        <p>Back in <strong>Plugins</strong>, JOYTREE now sits under <em>Your plugins</em> with an <strong>Active</strong> status. Open it to see its detail page.</p>
+        <figure>
+          <div class="frame">
+            <div class="cap"><span>Plugins <i>/</i> Your plugins</span><button type="button" class="zoom">Enlarge</button></div>
+            <div class="stage">
+              <img src="/guide/assets/02-your-plugins.webp" width="1072" height="400" loading="lazy" alt="Your plugins list with JOYTREE shown under Active as a custom connector">
+              <i class="pin" style="left:2.4%;top:60%">1</i>
+              <i class="pin" style="left:97.6%;top:62%">2</i>
+            </div>
+          </div>
+          <ol class="legend">
+            <li><span><b>Click the row</b> to open JOYTREE&rsquo;s detail page.</span></li>
+            <li><span><b>More actions</b> (&hellip;) &mdash; manage or remove the connector. Covered in <a href="#s5">Step 5</a>.</span></li>
+          </ol>
+        </figure>
+
+        <figure>
+          <div class="frame">
+            <div class="cap"><span>JOYTREE <i>/</i> Overview</span><button type="button" class="zoom">Enlarge</button></div>
+            <div class="stage">
+              <img src="/guide/assets/03-overview.webp" width="1077" height="472" loading="lazy" alt="JOYTREE connector overview showing Connected status, authorization set to sign-in required, and source mcp.joytree.site/mcp">
+              <i class="pin" style="left:47.6%;top:56.1%">1</i>
+              <i class="pin" style="left:80.6%;top:79%">2</i>
+              <i class="pin" style="left:82%;top:92.8%">3</i>
+              <i class="pin" style="left:24.5%;top:34.5%">4</i>
+            </div>
+          </div>
+          <ol class="legend">
+            <li><span><b>Connected</b> &mdash; the one status that matters. You&rsquo;re live.</span></li>
+            <li><span><b>Authorization: Sign-in required</b> &mdash; this names the <em>method</em> (OAuth sign-in with your key). It does not mean you&rsquo;re signed out.</span></li>
+            <li><span><b>Source</b> &mdash; should read <code>mcp.joytree.site/mcp</code>. If it doesn&rsquo;t, remove the connector and re-add it.</span></li>
+            <li><span><b>Permissions tab</b> &mdash; where you control what Claude may do. Next step.</span></li>
+          </ol>
+        </figure>
+        <div class="note"><b>&ldquo;Can send data to mcp.joytree.site&rdquo;</b><p>Claude shows this on every connector. It&rsquo;s expected: it&rsquo;s how your requests reach JOYTREE.</p></div>
+      </section>
+
+      <!-- STEP 4 -->
+      <section class="s" id="s4">
+        <div class="sh"><span class="n">STEP 04</span><h2>Set permissions</h2></div>
+        <p>This is the most valuable two minutes in the guide. Open the <strong>Permissions</strong> tab and choose, per tool or per group, when Claude is allowed to act. Tools are split into <strong>read-only</strong> tools (look, never touch) and tools that <strong>change things</strong> (deploy, delete, roll back, migrate).</p>
+        <figure>
+          <div class="frame">
+            <div class="cap"><span>JOYTREE <i>/</i> Permissions</span><button type="button" class="zoom">Enlarge</button></div>
+            <div class="stage">
+              <img src="/guide/assets/04-permissions.webp" width="1075" height="633" loading="lazy" alt="Permissions tab listing read-only tools with a group-level Needs approval setting and per-tool approve, ask and block icons">
+              <i class="pin" style="left:3.2%;top:49.9%">1</i>
+              <i class="pin" style="left:76.8%;top:49.9%">2</i>
+              <i class="pin" style="left:84.4%;top:57.5%">3</i>
+            </div>
+          </div>
+          <ol class="legend">
+            <li><span><b>Tool group</b> &mdash; Read-only tools, each with a plain-English description of what it does.</span></li>
+            <li><span><b>Group setting</b> &mdash; applies one rule to every tool in the group at once.</span></li>
+            <li><span><b>Per-tool control</b> &mdash; tick (always allow), hand (needs approval) or no-entry (blocked), tool by tool.</span></li>
+          </ol>
+        </figure>
+
+        <h3>The four modes</h3>
+        <figure>
+          <div class="frame">
+            <div class="cap"><span>JOYTREE <i>/</i> Permissions menu</span><button type="button" class="zoom">Enlarge</button></div>
+            <div class="stage">
+              <img src="/guide/assets/05-modes.webp" width="1078" height="635" loading="lazy" alt="The permission mode menu offering Blocked, Needs approval, Always allow and Custom">
+              <i class="pin" style="left:72.6%;top:46.3%">1</i>
+              <i class="pin" style="left:72.6%;top:50.7%">2</i>
+              <i class="pin" style="left:72.6%;top:55.1%">3</i>
+              <i class="pin" style="left:72.6%;top:59.5%">4</i>
+            </div>
+          </div>
+          <ol class="legend">
+            <li><span><b>Blocked</b></span></li>
+            <li><span><b>Needs approval</b></span></li>
+            <li><span><b>Always allow</b></span></li>
+            <li><span><b>Custom</b> &mdash; appears by itself when tools in a group have different settings.</span></li>
+          </ol>
+        </figure>
+
+        <div class="scroll"><table class="spec">
+          <thead><tr><th>Mode</th><th>What happens</th><th>Use it for</th></tr></thead>
+          <tbody>
+            <tr><td>Always allow<span class="tag">fast</span></td><td>Claude runs the tool without asking.</td><td>Read-only lookups: listing projects, logs, metrics.</td></tr>
+            <tr><td>Needs approval<span class="tag w">safe</span></td><td>Claude pauses and asks you each time.</td><td>Anything that changes state: deploys, env vars, rollbacks, migrations, firewall.</td></tr>
+            <tr><td>Blocked<span class="tag r">off</span></td><td>Claude cannot use the tool at all.</td><td>Tools you never want automated, such as <code>joytree_delete_project</code>.</td></tr>
+            <tr><td>Custom</td><td>A mix, shown on a group header.</td><td>Set automatically when you tune individual tools.</td></tr>
+          </tbody>
+        </table></div>
+
+        <div class="note"><b>Recommended setup</b><p>Set <strong>Read-only tools</strong> to Always allow so Claude can investigate freely. Keep everything that changes something on <strong>Needs approval</strong>. Block <code>joytree_delete_project</code> if you never want Claude deleting projects.</p></div>
+
+        <h3>Tools that change things</h3>
+        <p>Scroll further and you&rsquo;ll find the write tools, such as creating or deleting an alert rule, rolling back a deployment or starting a data migration. Expand <em>Takes N inputs</em> on any tool to see exactly what it will send, and <em>Raw schema</em> for the full definition.</p>
+        <figure>
+          <div class="frame">
+            <div class="cap"><span>JOYTREE <i>/</i> Permissions &middot; write tools</span><button type="button" class="zoom">Enlarge</button></div>
+            <div class="stage">
+              <img src="/guide/assets/06-write-tools.webp" width="1077" height="630" loading="lazy" alt="Write tools such as alert rule management, rollback and data migration, with an expanded raw input schema">
+              <i class="pin" style="left:84.4%;top:7.5%">1</i>
+              <i class="pin" style="left:5.6%;top:20.2%">2</i>
+              <i class="pin" style="left:4.2%;top:71.6%">3</i>
+            </div>
+          </div>
+          <ol class="legend">
+            <li><span><b>Per-tool control</b> &mdash; set each tool independently.</span></li>
+            <li><span><b>Inputs &amp; schema</b> &mdash; see every parameter before you approve anything.</span></li>
+            <li><span><b>State-changing tool</b> &mdash; e.g. <em>Roll back to a previous deployment</em> redeploys an earlier commit. Keep these on approval.</span></li>
+          </ol>
+        </figure>
+        <div class="warn"><b>Heads up</b><p>Firewall tools need a JOYTREE <strong>Pro</strong> plan or above. On lower plans they return an error even when allowed.</p></div>
+      </section>
+
+      <!-- STEP 5 -->
+      <section class="s" id="s5">
+        <div class="sh"><span class="n">STEP 05</span><h2>Manage the connector</h2></div>
+        <p>The <strong>&hellip;</strong> menu at the top right of the connector page holds three maintenance actions.</p>
+        <figure>
+          <div class="frame">
+            <div class="cap"><span>JOYTREE <i>/</i> More actions</span><button type="button" class="zoom">Enlarge</button></div>
+            <div class="stage">
+              <img src="/guide/assets/07-menu.webp" width="1078" height="452" loading="lazy" alt="The more-actions menu offering Refresh tools list, Disconnect and Remove">
+              <i class="pin" style="left:77.4%;top:30.3%">1</i>
+              <i class="pin" style="left:77.4%;top:38.5%">2</i>
+              <i class="pin" style="left:77.4%;top:44.7%">3</i>
+            </div>
+          </div>
+          <ol class="legend">
+            <li><span><b>Refresh tools list</b> &mdash; pulls the latest tools from JOYTREE. Use it after JOYTREE ships new tools, or if one seems to be missing.</span></li>
+            <li><span><b>Disconnect</b> &mdash; signs Claude out of JOYTREE but keeps the connector listed, so reconnecting is quick.</span></li>
+            <li><span><b>Remove</b> &mdash; deletes the connector entirely.</span></li>
+          </ol>
+        </figure>
+
+        <h3>Removing the connector</h3>
+        <figure>
+          <div class="frame">
+            <div class="cap"><span>JOYTREE <i>/</i> Delete</span><button type="button" class="zoom">Enlarge</button></div>
+            <div class="stage">
+              <img src="/guide/assets/08-remove.webp" width="1078" height="627" loading="lazy" alt="Delete JOYTREE confirmation dialog with Cancel and Delete buttons">
+              <i class="pin" style="left:17.0%;top:46.3%">1</i>
+              <i class="pin" style="left:57.3%;top:56%">2</i>
+            </div>
+          </div>
+          <ol class="legend">
+            <li><span><b>Read the warning</b> &mdash; you&rsquo;ll need the server address to add it again, and any project files synced from JOYTREE stop loading.</span></li>
+            <li><span><b>Delete</b> &mdash; confirms. Re-adding takes under a minute using the address from the top of this page.</span></li>
+          </ol>
+        </figure>
+      </section>
+
+      <section class="s" id="try">
+        <div class="sh"><span class="n">GO</span><h2>Try it</h2></div>
+        <p>Start a new chat and ask in plain language. Tap a prompt to copy it.</p>
+        <div class="chips">
+          <div class="chip"><div><q>List my JOYTREE projects and tell me which ones look unhealthy.</q><small>joytree_list_projects &middot; joytree_observability_summary</small></div><button type="button" data-copy="List my JOYTREE projects and tell me which ones look unhealthy.">Copy</button></div>
+          <div class="chip"><div><q>Deploy my GitHub repo and show me the build logs.</q><small>joytree_deploy_from_github &middot; joytree_runtime_logs</small></div><button type="button" data-copy="Deploy my GitHub repo and show me the build logs.">Copy</button></div>
+          <div class="chip"><div><q>Show CPU and memory for my app over the last hour.</q><small>joytree_observability_resources</small></div><button type="button" data-copy="Show CPU and memory for my app over the last hour.">Copy</button></div>
+          <div class="chip"><div><q>That release broke checkout. Roll back to the last good deployment.</q><small>joytree_rollback_deployment</small></div><button type="button" data-copy="That release broke checkout. Roll back to the last good deployment.">Copy</button></div>
+          <div class="chip"><div><q>Create a new Postgres database for my orders service.</q><small>joytree_create_database</small></div><button type="button" data-copy="Create a new Postgres database for my orders service.">Copy</button></div>
+        </div>
+        <p>If a tool is set to <strong>Needs approval</strong>, Claude will pause and ask before it runs. That&rsquo;s the system working as designed.</p>
+      </section>
+
+      <section class="s" id="help">
+        <div class="sh"><span class="n">FAQ</span><h2>Troubleshooting</h2></div>
+        <details>
+          <summary>JOYTREE&rsquo;s tools aren&rsquo;t showing up in my chat</summary>
+          <div><p>Confirm the connector page says <strong>Connected</strong>, then open the <strong>&hellip;</strong> menu and choose <strong>Refresh tools list</strong>. Start a new chat afterwards so Claude loads the updated list.</p></div>
+        </details>
+        <details>
+          <summary>The sign-in page rejects my key</summary>
+          <div><p>Keys start with <code>jtk_</code> and are checked against JOYTREE when you press Connect. Copy a fresh one from <a href="https://joytree.site/dashboard/account" target="_blank" rel="noopener">your account page</a> or run <code>joytree apikey show</code>. A key that has been regenerated or revoked will not work.</p></div>
+        </details>
+        <details>
+          <summary>It worked yesterday, now Claude asks me to sign in again</summary>
+          <div><p>Sign-in sessions are held in the server&rsquo;s memory, so a restart or update on JOYTREE&rsquo;s side signs everyone out. Reconnect from Plugins and paste your key again. It takes about ten seconds and nothing is lost.</p></div>
+        </details>
+        <details>
+          <summary>Claude asks for approval on every single lookup</summary>
+          <div><p>Open <strong>Permissions</strong> and set <strong>Read-only tools</strong> to <strong>Always allow</strong>. Leave the state-changing tools on Needs approval.</p></div>
+        </details>
+        <details>
+          <summary>Firewall tools return an error</summary>
+          <div><p>The firewall is a <strong>Pro plan and above</strong> feature on JOYTREE. Upgrade the plan, or leave those tools blocked.</p></div>
+        </details>
+        <details>
+          <summary>How do I fully cut off access?</summary>
+          <div><p>Use <strong>Disconnect</strong> (or <strong>Remove</strong>) in Claude. To also invalidate the credential itself, rotate your API key in the JOYTREE dashboard.</p></div>
+        </details>
+      </section>
+
+      <section class="s" id="security">
+        <div class="sh"><span class="n">TRUST</span><h2>Security, in plain terms</h2></div>
+        <ul class="plain">
+          <li><strong>Your key is exchanged, not shared.</strong> It&rsquo;s verified once and replaced by an opaque OAuth token.</li>
+          <li><strong>Everything runs as you.</strong> Each request is scoped to your own key. There&rsquo;s no shared or server-wide credential anywhere.</li>
+          <li><strong>No cross-talk.</strong> Every request gets its own isolated server instance, so one caller&rsquo;s context can never leak into another&rsquo;s.</li>
+          <li><strong>You hold the brakes.</strong> Permissions in Step 4 decide what Claude can do without asking.</li>
+        </ul>
+        <p>Read the full <a href="/privacy">privacy policy</a>.</p>
+      </section>
+
+      <div class="cta">
+        <h2>Ready to ship from your chat?</h2>
+        <p>Add the connector in Claude, paste your key, and ask for your first deploy.</p>
+        <div class="field"><code>https://mcp.joytree.site/mcp</code><button type="button" data-copy="https://mcp.joytree.site/mcp">Copy</button></div>
+        <div class="hero-actions"><a class="jt-btn" href="https://claude.ai/plugins" target="_blank" rel="noopener">Open Claude Plugins</a><a class="jt-btn ghost" href="https://joytree.site/dashboard/account" target="_blank" rel="noopener">Get my API key</a></div>
+      </div>
+    </div>
+  </div>

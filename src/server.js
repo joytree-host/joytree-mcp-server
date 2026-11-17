@@ -1,14 +1,16 @@
 'use strict';
 
 const express = require('express');
+const path = require('path');
 const { execSync } = require('child_process');
 const { McpServer } = require('@modelcontextprotocol/sdk/server/mcp.js');
 const { StreamableHTTPServerTransport } = require('@modelcontextprotocol/sdk/server/streamableHttp.js');
 const { mcpAuthRouter } = require('@modelcontextprotocol/sdk/server/auth/router.js');
-const { JoyTreeClient } = require('./joytree-client');
+const { JoyTreeClient, BASE_URL } = require('./joytree-client');
 const { PRIVACY_POLICY_HTML } = require('./privacy-policy');
 const { registerJoyTreeTools } = require('./tools');
 const { JoyTreeOAuthProvider } = require('./oauth-provider');
+const { renderGuidePage } = require('./guide-page');
 
 const PORT = process.env.PORT || 8787;
 const PUBLIC_URL = process.env.MCP_PUBLIC_URL || `http://localhost:${PORT}`;
@@ -108,6 +110,20 @@ app.get('/health', (_req, res) => res.status(200).json({
   commit: GIT_COMMIT,
   startedAt: STARTED_AT,
   uptimeSeconds: Math.round(process.uptime()),
+}));
+
+// Setup guide: how to add JOYTREE to Claude, with annotated screenshots.
+app.get(['/guide', '/guide/'], (_req, res) => {
+  res.status(200).set({
+    'Content-Type': 'text/html; charset=utf-8',
+    'Cache-Control': 'public, max-age=300',
+  }).send(renderGuidePage({ baseUrl: BASE_URL }));
+});
+app.use('/guide/assets', express.static(path.join(__dirname, 'assets', 'guide'), {
+  maxAge: '7d',
+  immutable: true,
+  index: false,
+  fallthrough: false,
 }));
 
 app.get('/privacy', (_req, res) => {

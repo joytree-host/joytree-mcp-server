@@ -57,6 +57,7 @@ svg[hidden]{display:none}
 /* Page */
 .page{max-width:880px;margin:0 auto;padding:28px 40px 56px}
 @media(max-width:860px){.page{padding:22px 20px 48px}}
+.page.wide{max-width:1180px}
 @media(max-width:480px){.page{padding:18px 16px 44px}}
 .eyebrow{font-size:14px;font-weight:600;color:var(--text-dim);margin:0 0 10px}
 .hero{padding-bottom:28px;border-bottom:1px solid var(--border-soft)}
@@ -134,7 +135,7 @@ code{font-family:var(--font-mono);font-size:85%;background:var(--code-inline);pa
 const THEME_BOOT = `(function(){var s=null;try{s=localStorage.getItem('joytree-theme')}catch(e){}document.documentElement.setAttribute('data-theme',s==='dark'?'dark':'light')})();`;
 const THEME_TOGGLE = `(function(){var b=document.getElementById('themeToggle');if(!b)return;var sun=document.getElementById('iconSun'),moon=document.getElementById('iconMoon');function paint(){var d=document.documentElement.getAttribute('data-theme')==='dark';sun.hidden=d;moon.hidden=!d;}paint();b.addEventListener('click',function(){var d=document.documentElement.getAttribute('data-theme')==='dark';var n=d?'light':'dark';document.documentElement.setAttribute('data-theme',n);try{localStorage.setItem('joytree-theme',n)}catch(e){}paint();});})();`;
 
-function renderShell({ title, description, main, baseUrl }) {
+function renderShell({ title, description, main, baseUrl, wide = false, extraCss = '', extraScript = '' }) {
   const base = baseUrl || 'https://joytree.site';
   return `<!DOCTYPE html>
 <html lang="en" data-theme="light"><head><meta charset="utf-8">
@@ -147,7 +148,7 @@ function renderShell({ title, description, main, baseUrl }) {
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&display=swap">
 <script>${THEME_BOOT}</script>
-<style>${CSS}</style></head>
+<style>${CSS}${extraCss}</style></head>
 <body>
 <header class="topbar"><div class="topbar-inner">
   <a href="${base}" class="brand" target="_blank" rel="noopener"><span class="brand-mark" aria-hidden="true"><img src="${LOGO_DATA_URI}" alt="" width="24" height="24"></span><span class="brand-name">JOYTREE<span class="brand-dot">mcp</span></span></a>
@@ -160,11 +161,12 @@ function renderShell({ title, description, main, baseUrl }) {
     <svg id="iconMoon" width="18" height="18" viewBox="0 0 24 24" fill="none" hidden><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
   </button>
 </div></header>
-<main class="page">
+<main class="page${wide ? ' wide' : ''}">
 ${main}
 <footer class="foot"><span>&copy; JOYTREE</span><span><a href="${base}" target="_blank" rel="noopener">joytree.site</a></span></footer>
 </main>
 <script>${THEME_TOGGLE}</script>
+${extraScript ? `<script>${extraScript}</script>` : ''}
 </body></html>`;
 }
 
