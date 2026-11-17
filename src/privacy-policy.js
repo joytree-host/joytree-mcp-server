@@ -9,16 +9,18 @@ const PRIVACY_POLICY_HTML = `<!DOCTYPE html>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Privacy Policy — JoyTree MCP Server</title>
 <style>
-  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#09090b;color:#e2e8f0;
+  :root{color-scheme:light dark;--bg:#ffffff;--sub:#f6f8fa;--bd:#d0d7de;--bdm:#d8dee4;--fg:#1f2328;--mu:#59636e;--link:#066648;--em:#10b981}
+  @media (prefers-color-scheme:dark){:root{--bg:#0d1117;--sub:#151b23;--bd:#3d444d;--bdm:#30363d;--fg:#e6edf3;--mu:#9198a1;--link:#34d399}}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans',Helvetica,Arial,sans-serif;background:var(--bg);color:var(--fg);
        max-width:720px;margin:0 auto;padding:48px 24px 96px;line-height:1.65;}
-  h1{font-size:1.6rem;margin-bottom:4px;}
-  .updated{color:#94a3b8;font-size:.85rem;margin-bottom:32px;}
-  h2{font-size:1.15rem;color:#6ee7b7;margin-top:36px;margin-bottom:10px;}
-  p,li{color:#cbd5e1;font-size:.96rem;}
+  h1{font-size:1.7rem;font-weight:600;letter-spacing:-.015em;margin-bottom:4px;}
+  .updated{color:var(--mu);font-size:.85rem;margin-bottom:32px;padding-bottom:16px;border-bottom:1px solid var(--bd);}
+  h2{font-size:1.15rem;font-weight:600;color:var(--fg);margin-top:36px;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--bdm);}
+  p,li{color:var(--fg);font-size:.96rem;}
   ul{padding-left:20px;}
-  a{color:#6ee7b7;}
-  code{background:#1a1a1d;padding:2px 6px;border-radius:4px;font-size:.88em;}
-  .contact{background:#111113;border:1px solid rgba(16,185,129,.2);border-radius:10px;padding:18px 20px;margin-top:8px;}
+  a{color:var(--link);text-decoration:none;} a:hover{text-decoration:underline;}
+  code{background:var(--sub);border:1px solid var(--bdm);padding:1px 6px;border-radius:6px;font-size:.86em;}
+  .contact{background:var(--sub);border:1px solid var(--bd);border-radius:6px;padding:18px 20px;margin-top:8px;}
 </style>
 </head>
 <body>
