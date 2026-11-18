@@ -152,7 +152,7 @@ html[data-theme="dark"] .connect-card{box-shadow:0 24px 48px -24px rgba(0,0,0,.7
 .connect-card .field code{flex:1;min-width:0;background:none;font-size:14px;padding:11px 14px;overflow-x:auto;white-space:nowrap}
 .connect-card .field button{border:0;border-left:1px solid var(--border);background:var(--bg-raised);color:var(--text);font:600 13px/1 var(--font-body);padding:0 16px;cursor:pointer}
 .connect-card .field button:hover{background:var(--bg-hover)}
-.connect-card .field button.done{background:var(--link);color:#fff}
+.connect-card .field button.done{background:#059669;color:#fff}
 .connect-card a.jt-btn.block{display:flex;align-items:center;justify-content:center;gap:8px;height:44px}
 /* guide section sits under the capabilities, centred, with its own sticky contents */
 .page.full .guide{margin-top:72px;padding-top:8px;border-top:1px solid var(--border-soft)}

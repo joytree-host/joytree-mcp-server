@@ -14,7 +14,7 @@ const CSS = `
   --bg-hover:rgba(208,215,222,.32);
   --border:#d0d7de;--border-soft:#d8dee4;--border-hi:#afb8c1;
   --text:#1f2328;--text-dim:#59636e;--text-faint:#6e7781;
-  --link:#0969da;--focus:#0969da;
+  --link:#047857;--focus:#0969da;
   --code-inline:rgba(129,139,152,.16);
   --radius-sm:6px;--topbar-h:56px;--tile:#1f2328;
   color-scheme:light;
@@ -24,7 +24,7 @@ html[data-theme="dark"]{
   --bg-hover:rgba(177,186,196,.12);
   --border:#3d444d;--border-soft:#30363d;--border-hi:#656c76;
   --text:#f0f6fc;--text-dim:#9198a1;--text-faint:#848d97;
-  --link:#4493f8;--focus:#4493f8;
+  --link:#34d399;--focus:#4493f8;
   --code-inline:rgba(101,108,118,.2);--tile:#f0f6fc;
   color-scheme:dark;
 }

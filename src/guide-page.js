@@ -59,7 +59,7 @@ html{scroll-padding-top:calc(var(--topbar-h) + 16px)}
 .guide .field code{flex:1;background:none;font-size:14px;padding:11px 14px;overflow-x:auto;white-space:nowrap;border-radius:0}
 .guide .field button,.guide .chip button{border:0;border-left:1px solid var(--border);background:var(--bg-raised);color:var(--text);font:600 13px/1 var(--font-body);padding:0 16px;cursor:pointer;min-width:76px;transition:background .12s}
 .guide .field button:hover,.guide .chip button:hover{background:var(--bg-hover)}
-.guide .field button.done,.guide .chip button.done{background:var(--link);color:#fff}
+.guide .field button.done,.guide .chip button.done{background:#059669;color:#fff}
 
 /* spec table */
 .guide .scroll{overflow-x:auto;border:1px solid var(--border);border-radius:var(--radius-sm);margin:18px 0}

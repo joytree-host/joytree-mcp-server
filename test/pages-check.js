@@ -16,9 +16,10 @@ assert.ok(!connect.includes('__FIELDS__') && !connect.includes('__BASE__'));
 for (const a of ['Claude', 'Cursor', 'ChatGPT', 'Lovable', 'Zed', 'Cline', 'Raycast', 'Windsurf', 'Gemini', 'Antigravity']) assert.ok(connect.includes(a), 'agent ' + a);
 console.log('pages-check: OK');
 
-// No green UI accents (leaves ambiance and the logo excluded).
+// Links are brand green (light #047857, dark #34d399) for consistency.
 for (const [name, html] of [['connect', connect], ['privacy', PRIVACY_POLICY_HTML]]) {
-  const css = html.match(/<style>([\s\S]*?)<\/style>/)[1].replace(/\.jt-btn[^{]*\{[^}]*\}/g, '');
-  assert.ok(!/#10b981|#059669|#047857|#34d399|#ecfdf5|var\(--brand(?!-dot|-name|-mark)/.test(css), name + ': no green accents');
+  const css = html.match(/<style>([\s\S]*?)<\/style>/)[1];
+  assert.ok(/--link:#047857/.test(css) && /--link:#34d399/.test(css), name + ': green links');
+  assert.ok(!/--link:#0969da|--link:#4493f8/.test(css), name + ': no blue links');
 }
-console.log('pages-check (no green): OK');
+console.log('pages-check (green links): OK');
