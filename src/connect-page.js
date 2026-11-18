@@ -97,9 +97,6 @@ const PAGE_CSS = `
 @media(max-width:860px){.page.wide.full{padding:22px 20px 48px}}
 @media(max-width:480px){.page.wide.full{padding:18px 16px 44px}}
 .split{position:relative;isolation:isolate;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:56px;align-items:center;padding:36px 0 52px;border-bottom:1px solid var(--border-soft)}
-.split::before{content:'';position:absolute;z-index:-1;inset:-36px -24px 0 -24px;pointer-events:none;
-  background-image:linear-gradient(var(--border-soft) 1px,transparent 1px),linear-gradient(90deg,var(--border-soft) 1px,transparent 1px);background-size:48px 48px;
-  -webkit-mask-image:radial-gradient(ellipse 60% 90% at 30% 10%,#000 0%,transparent 72%);mask-image:radial-gradient(ellipse 60% 90% at 30% 10%,#000 0%,transparent 72%);opacity:.6}
 .split h1{font-size:clamp(42px,5.6vw,88px);line-height:1.03;letter-spacing:-.03em;margin:0 0 18px}
 .split .lede{font-size:clamp(17px,1.5vw,22px);max-width:56ch}
 .split .hero-actions{margin-top:28px}
@@ -130,15 +127,12 @@ html[data-theme="dark"] .connect-card{box-shadow:0 24px 48px -24px rgba(0,0,0,.7
 .split-copy>*{animation:cp-up .6s cubic-bezier(.2,.8,.2,1) backwards}
 .split-copy>:nth-child(2){animation-delay:.06s}.split-copy>:nth-child(3){animation-delay:.12s}.split-copy>:nth-child(4){animation-delay:.18s}
 .connect-card{animation:cp-up .7s cubic-bezier(.2,.8,.2,1) .15s backwards}
-@media(max-width:980px){.split{grid-template-columns:1fr;gap:32px;padding:20px 0 40px}.split::before{inset:-22px -20px 0 -20px}}
+@media(max-width:980px){.split{grid-template-columns:1fr;gap:32px;padding:20px 0 40px}}
 @media(min-width:1500px){.connect-card{padding:32px}.cc-title{font-size:30px}}
 @media(prefers-reduced-motion:reduce){.split-copy>*,.connect-card{animation:none}.page.full .grid-card{transition:none}}
 
 /* ---- Hero dock: the "Works with" animation now lives in the hero ----- */
 .hero-dock{position:relative;isolation:isolate;margin:28px 0 0}
-.hero-dock::before{content:'';position:absolute;z-index:-1;inset:-34px -28px -30px -28px;pointer-events:none;
-  background:radial-gradient(55% 75% at 22% 50%,color-mix(in srgb,var(--link) 18%,transparent),transparent 72%);filter:blur(6px);animation:hd-drift 9s ease-in-out infinite alternate}
-@keyframes hd-drift{from{transform:translateX(-14px) scale(.96);opacity:.75}to{transform:translateX(26px) scale(1.04);opacity:1}}
 .hd-label{margin:0 0 10px;font-size:14px;font-weight:600;color:var(--text-dim)}
 .hero-dock .dock{--s:52px;--ov:-17px}
 .hero-dock .dk-pill{padding:10px 18px 10px 24px;background:color-mix(in srgb,var(--bg-raised) 78%,transparent);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);box-shadow:0 18px 36px -22px rgba(9,105,218,.55)}
@@ -166,7 +160,6 @@ html[data-theme="dark"] .connect-card{box-shadow:0 24px 48px -24px rgba(0,0,0,.7
 .page.full .guide .g-title{margin:0 0 12px;padding:0;border:0;font-size:clamp(30px,4.2vw,52px);line-height:1.08;letter-spacing:-.02em}
 .page.full .guide .g-title em{font-style:italic;font-weight:500;color:var(--text-dim)}
 .page.full .guide .g-layout{max-width:1060px;margin:0 auto}
-@media(prefers-reduced-motion:reduce){.hero-dock::before{animation:none}}
 `;
 
 function renderConnectPage({ baseUrl, fields = '', standalone = false }) {
