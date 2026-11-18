@@ -111,7 +111,7 @@ code{font-family:var(--font-mono);font-size:85%;background:var(--code-inline);pa
 .connect-card form{margin-top:4px}
 .connect-card input[type=password]{display:block;width:100%;height:40px;padding:0 12px;margin:0 0 12px;font-size:16px;font-family:var(--font-mono);color:var(--text);background:var(--bg-raised);border:1px solid var(--border);border-radius:var(--radius-sm);outline:none;transition:border-color .12s,box-shadow .12s}
 .connect-card input[type=password]:hover{border-color:var(--border-hi)}
-.connect-card input[type=password]:focus{border-color:var(--focus);box-shadow:0 0 0 3px color-mix(in srgb,var(--focus) 35%,transparent)}
+.connect-card input[type=password]:focus,.connect-card input[type=password]:focus-visible{outline:none;box-shadow:none;border-color:var(--link)}
 .hint{margin:12px 0 0;font-size:13px;color:var(--text-dim)}
 
 /* Steps */
