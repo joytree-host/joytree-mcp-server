@@ -18,7 +18,7 @@ html{scroll-padding-top:calc(var(--topbar-h) + 16px)}
 /* hero */
 .guide .g-hero{padding-bottom:28px}
 .guide .g-hero h1 em{font-style:italic;font-weight:500;color:var(--text-dim)}
-.guide .g-meta{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin-top:28px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg-raised);overflow:hidden}
+.guide .g-meta{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin-top:28px;border:1px solid var(--border);border-radius:var(--radius-card);background:var(--bg-raised);overflow:hidden}
 .guide .g-meta div{padding:14px 16px;min-width:0}
 .guide .g-meta div+div{border-left:1px solid var(--border-soft)}
 .guide .g-meta b{display:block;font-family:var(--font-display);font-size:22px;font-weight:600;line-height:1.2;white-space:nowrap}
@@ -62,7 +62,7 @@ html{scroll-padding-top:calc(var(--topbar-h) + 16px)}
 .guide .field button.done,.guide .chip button.done{background:#059669;color:#fff}
 
 /* spec table */
-.guide .scroll{overflow-x:auto;border:1px solid var(--border);border-radius:var(--radius-sm);margin:18px 0}
+.guide .scroll{overflow-x:auto;border:1px solid var(--border);border-radius:var(--radius-card);margin:18px 0}
 .guide .spec{width:100%;border-collapse:collapse;font-size:14px}
 .guide .spec th{font-size:12px;font-weight:600;color:var(--text-dim);text-align:left;padding:10px 14px;background:var(--bg-sunken);border-bottom:1px solid var(--border)}
 .guide .spec td{padding:12px 14px;border-top:1px solid var(--border-soft);vertical-align:top;color:var(--text-dim)}
@@ -81,8 +81,8 @@ html{scroll-padding-top:calc(var(--topbar-h) + 16px)}
 
 /* figures */
 .guide figure{margin:24px 0 12px}
-.guide .frame{border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg-raised);overflow:hidden}
-.guide figure{border-radius:var(--radius-sm);box-shadow:0 8px 24px -14px rgba(31,35,40,.22)}
+.guide .frame{border:1px solid var(--border);border-radius:var(--radius-card);background:var(--bg-raised);overflow:hidden}
+.guide figure{border-radius:var(--radius-card);box-shadow:0 8px 24px -14px rgba(31,35,40,.22)}
 html[data-theme="dark"] .guide figure{box-shadow:0 8px 24px -14px rgba(0,0,0,.7)}
 .guide .cap{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:8px 12px;background:var(--bg-sunken);border-bottom:1px solid var(--border);font-size:12px;color:var(--text-dim)}
 .guide .cap>span{display:inline-flex;align-items:center;gap:10px}
@@ -102,7 +102,7 @@ html[data-theme="dark"] .guide figure{box-shadow:0 8px 24px -14px rgba(0,0,0,.7)
 .guide .gstep b.n,.guide .gstep>b:first-child{flex:none;display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--cur-ring);color:#fff;font:700 14px/1 var(--font-body)}
 .guide .gstep span b{font-weight:600}
 .guide figure{margin:28px 0 12px}
-.guide .frame{border-radius:var(--radius-sm)}
+.guide .frame{border-radius:var(--radius-card)}
 .guide .stage{position:relative;overflow:hidden}
 .curx{position:absolute;left:var(--x1);top:var(--y1);width:0;height:0;z-index:3;pointer-events:none;filter:drop-shadow(0 3px 3px rgba(0,0,0,.35))}
 .curx svg{position:absolute;left:-3px;top:-3px;display:block;max-width:none}
@@ -123,7 +123,7 @@ html[data-theme="dark"] .guide figure{box-shadow:0 8px 24px -14px rgba(0,0,0,.7)
 .guide-dialog .curx::after{display:none}
 
 /* prompts */
-.guide .chips{margin:18px 0;border:1px solid var(--border);border-radius:var(--radius-sm);overflow:hidden}
+.guide .chips{margin:18px 0;border:1px solid var(--border);border-radius:var(--radius-card);overflow:hidden}
 .guide .chip{display:grid;grid-template-columns:1fr auto;border-top:1px solid var(--border-soft);background:var(--bg-raised)}
 .guide .chip:first-child{border-top:0}
 .guide .chip div{padding:12px 16px;min-width:0}
@@ -131,7 +131,7 @@ html[data-theme="dark"] .guide figure{box-shadow:0 8px 24px -14px rgba(0,0,0,.7)
 .guide .chip small{display:block;margin-top:4px;font:12px/1.4 var(--font-mono);color:var(--text-faint);overflow-wrap:anywhere}
 
 /* accordion */
-.guide details{border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg-raised);margin:8px 0}
+.guide details{border:1px solid var(--border);border-radius:var(--radius-card);background:var(--bg-raised);margin:8px 0}
 .guide details[open]{background:var(--bg-sunken)}
 .guide summary{list-style:none;cursor:pointer;padding:13px 40px 13px 16px;color:var(--text);font-weight:600;font-size:15px;position:relative;border-radius:var(--radius-sm)}
 .guide summary::-webkit-details-marker{display:none}
@@ -142,19 +142,19 @@ html[data-theme="dark"] .guide figure{box-shadow:0 8px 24px -14px rgba(0,0,0,.7)
 @keyframes g-open{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
 
 /* flow */
-.guide .flow{display:grid;grid-template-columns:1fr;border:1px solid var(--border);border-radius:var(--radius-sm);margin:22px 0;overflow:hidden;background:var(--bg-raised)}
+.guide .flow{display:grid;grid-template-columns:1fr;border:1px solid var(--border);border-radius:var(--radius-card);margin:22px 0;overflow:hidden;background:var(--bg-raised)}
 .guide .flow div{padding:14px 16px;border-top:1px solid var(--border-soft)}
 .guide .flow div:first-child{border-top:0}
 .guide .flow b{display:block;color:var(--text);font-size:15px}
 .guide .flow span{color:var(--text-dim);font-size:14px}
 @media(min-width:720px){.guide .flow{grid-template-columns:repeat(3,1fr)}.guide .flow div{border-top:0;border-left:1px solid var(--border-soft)}.guide .flow div:first-child{border-left:0}}
 
-.guide .cta{margin:44px 0 0;border:1px solid var(--border);border-radius:var(--radius-sm);padding:26px 24px;background:var(--bg-sunken)}
+.guide .cta{margin:44px 0 0;border:1px solid var(--border);border-radius:var(--radius-card);padding:26px 24px;background:var(--bg-sunken)}
 .guide .cta h2{margin:0 0 8px;padding:0;border:0;font-size:24px}
 .guide .cta .hero-actions{margin-top:16px}
 
 /* lightbox */
-.guide-dialog{border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg);padding:0;max-width:min(96vw,1180px);width:100%;color:var(--text);overflow:hidden}
+.guide-dialog{border:1px solid var(--border);border-radius:var(--radius-dialog);background:var(--bg);padding:0;max-width:min(96vw,1180px);width:100%;color:var(--text);overflow:hidden}
 .guide-dialog::backdrop{background:rgba(1,4,9,.8);backdrop-filter:blur(3px)}
 .guide-dialog .frame{border:0;border-radius:0;box-shadow:none}
 .guide-dialog .cap button{cursor:pointer}
