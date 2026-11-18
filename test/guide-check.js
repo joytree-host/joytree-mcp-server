@@ -19,12 +19,15 @@ assert.ok(!html.includes('<!--AGENT_DOCK'), 'no unreplaced placeholders');
 const imgs = [...html.matchAll(/src="\/guide\/assets\/([^"]+)"/g)].map((m) => m[1]);
 assert.strictEqual(imgs.length, 8, 'eight screenshots');
 for (const f of imgs) assert.ok(fs.existsSync(path.join(__dirname, '../src/assets/guide', f)), 'asset exists: ' + f);
-for (const fig of html.split('<figure>').slice(1)) {
-  const f = fig.split('</figure>')[0];
-  const pins = (f.match(/class="pin"/g) || []).length;
-  const legend = (f.match(/<li><span>/g) || []).length;
-  assert.ok(pins > 0 && pins === legend, `pins (${pins}) must equal legend items (${legend})`);
-}
+// each screenshot: one numbered step line + one travelling cursor, no pins or numbered legends
+const figs = html.split('<figure>').slice(1).map((f) => f.split('</figure>')[0]);
+assert.strictEqual(figs.length, 8);
+figs.forEach((f, i) => {
+  assert.ok(f.includes(`<p class="gstep"><b>${i + 1}</b>`), `step ${i + 1} caption`);
+  assert.strictEqual((f.match(/class="curx /g) || []).length, 1, `step ${i + 1}: one cursor`);
+  assert.ok(!f.includes('class="pin"') && !f.includes('class="legend"'), `step ${i + 1}: no pins/legend`);
+});
+assert.ok(!/STEP 0\d/.test(html), 'only the click steps are numbered');
 for (const id of ['short', 'before', 's1', 's2', 's3', 's4', 's5', 'try', 'help', 'security']) {
   assert.ok(html.includes(`id="${id}"`), 'section ' + id);
   assert.ok(html.includes(`href="#${id}"`), 'toc link ' + id);

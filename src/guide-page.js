@@ -49,7 +49,7 @@ html{scroll-padding-top:calc(var(--topbar-h) + 16px)}
 .guide h3{margin:26px 0 8px;font-size:17px}
 .guide p{color:var(--text-dim);max-width:68ch}
 .guide p strong,.guide li strong,.guide td strong{color:var(--text)}
-.guide p a,.guide li a,.guide td a,.guide .legend a{color:var(--link);font-weight:500}
+.guide p a,.guide li a,.guide td a,.guide .notes a{color:var(--link);font-weight:500}
 .guide p a:hover,.guide li a:hover{text-decoration:underline}
 .guide ul.plain,.guide ol.plain{margin:12px 0 12px 20px;padding:0;color:var(--text-dim)}
 .guide ul.plain li{margin:8px 0;padding-left:4px}
@@ -93,24 +93,34 @@ html[data-theme="dark"] .guide figure{box-shadow:0 8px 24px -14px rgba(0,0,0,.7)
 .guide .cap button:focus-visible{outline:2px solid var(--focus)}
 .guide .stage{position:relative;line-height:0;cursor:zoom-in;background:#fff}
 .guide .stage img{display:block;width:100%;height:auto}
-.guide .pin{position:absolute;transform:translate(-50%,-50%) scale(1);width:26px;height:26px;display:grid;place-items:center;border-radius:50%;background:var(--pin);color:var(--pin-ink);font:700 13px/1 var(--font-body);font-style:normal;box-shadow:0 0 0 3px rgba(255,255,255,.9),0 4px 12px rgba(0,0,0,.35);transition:transform .25s cubic-bezier(.34,1.56,.64,1),opacity .2s}
-.guide .pin::after{content:'';position:absolute;inset:-3px;border-radius:50%;border:2px solid var(--pin);opacity:0;animation:g-ping 2.6s ease-out infinite;animation-delay:var(--d,0s)}
-@keyframes g-ping{0%{transform:scale(.9);opacity:.7}70%,100%{transform:scale(1.9);opacity:0}}
-/* entrance: pins spring in one by one when the figure scrolls into view */
-.guide.js figure:not(.seen) .pin{transform:translate(-50%,-50%) scale(0);opacity:0}
-.guide figure.seen .pin{transition-delay:var(--d,0s)}
-/* legend hover highlights the matching pin */
-.guide figure.hl .pin{opacity:.35}
-.guide figure.hl .pin.on{opacity:1;transform:translate(-50%,-50%) scale(1.25)}
 
-.guide .legend{list-style:none;counter-reset:l;margin:0;padding:0;border:1px solid var(--border);border-top:0;border-radius:0 0 var(--radius-sm) var(--radius-sm);overflow:hidden;margin-top:-1px}
-.guide .legend li{counter-increment:l;display:grid;grid-template-columns:44px 1fr;border-top:1px solid var(--border-soft);color:var(--text-dim);font-size:14px;transition:background .12s}
-.guide .legend li:first-child{border-top:0}
-.guide .legend li:hover{background:var(--bg-sunken)}
-.guide .legend li::before{content:counter(l);display:grid;place-items:center;font:700 13px/1 var(--font-body);color:var(--pin);border-right:1px solid var(--border-soft);background:var(--bg-sunken)}
-.guide .legend li span{padding:10px 14px}
-.guide .legend li b{color:var(--text)}
-.guide figure .frame{border-bottom-left-radius:0;border-bottom-right-radius:0}
+
+
+/* step captions + travelling cursor ---------------------------------- */
+.guide{--cur-ring:#e8590c}
+.guide .gstep{display:flex;gap:12px;align-items:flex-start;margin:0 0 10px;font-size:16px;line-height:1.45;color:var(--text)}
+.guide .gstep b.n,.guide .gstep>b:first-child{flex:none;display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--cur-ring);color:#fff;font:700 14px/1 var(--font-body)}
+.guide .gstep span b{font-weight:600}
+.guide figure{margin:28px 0 12px}
+.guide .frame{border-radius:var(--radius-sm)}
+.guide .stage{position:relative;overflow:hidden}
+.curx{position:absolute;left:var(--x1);top:var(--y1);width:0;height:0;z-index:3;pointer-events:none;filter:drop-shadow(0 3px 3px rgba(0,0,0,.35))}
+.curx svg{position:absolute;left:-3px;top:-3px;display:block;max-width:none}
+.curx::after{content:'';position:absolute;left:-22px;top:-22px;width:44px;height:44px;border-radius:50%;border:4px solid var(--cur-ring,#e8590c);opacity:0;transform:scale(.3)}
+.guide.js figure:not(.seen) .curx{opacity:0;left:var(--sx);top:var(--sy)}
+.guide figure.seen .curx.one{animation:cur-one 5s cubic-bezier(.5,0,.2,1) .25s infinite}
+.guide figure.seen .curx.two{animation:cur-two 7s cubic-bezier(.5,0,.2,1) .25s infinite}
+.guide figure.seen .curx.one::after{animation:ring-one 5s ease-out .25s infinite}
+.guide figure.seen .curx.two::after{animation:ring-two 7s ease-out .25s infinite}
+@keyframes cur-one{0%{left:var(--sx);top:var(--sy);opacity:0}10%{opacity:1}38%,80%{left:var(--x1);top:var(--y1);opacity:1}92%,100%{left:var(--x1);top:var(--y1);opacity:0}}
+@keyframes ring-one{0%,40%{opacity:0;transform:scale(.3)}42%{opacity:.95;transform:scale(.55)}58%,100%{opacity:0;transform:scale(1.6)}}
+@keyframes cur-two{0%{left:var(--sx);top:var(--sy);opacity:0}8%{opacity:1}24%,40%{left:var(--x1);top:var(--y1);opacity:1}62%,84%{left:var(--x2);top:var(--y2);opacity:1}94%,100%{left:var(--x2);top:var(--y2);opacity:0}}
+@keyframes ring-two{0%,25%{opacity:0;transform:scale(.3)}27%{opacity:.95;transform:scale(.55)}38%{opacity:0;transform:scale(1.6)}39%,63%{opacity:0;transform:scale(.3)}65%{opacity:.95;transform:scale(.55)}78%,100%{opacity:0;transform:scale(1.6)}}
+.guide .notes{list-style:none;margin:12px 0 0;padding:0 0 0 14px;border-left:2px solid var(--border-soft);color:var(--text-dim);font-size:14px}
+.guide .notes li{margin:6px 0}
+.guide .notes b{color:var(--text)}
+.guide-dialog .curx{left:var(--x1);top:var(--y1);opacity:1;animation:none}
+.guide-dialog .curx::after{display:none}
 
 /* prompts */
 .guide .chips{margin:18px 0;border:1px solid var(--border);border-radius:var(--radius-sm);overflow:hidden}
@@ -149,12 +159,11 @@ html[data-theme="dark"] .guide figure{box-shadow:0 8px 24px -14px rgba(0,0,0,.7)
 .guide-dialog .frame{border:0;border-radius:0;box-shadow:none}
 .guide-dialog .cap button{cursor:pointer}
 .guide-dialog .stage{cursor:zoom-out}
-.guide-dialog .pin{transform:translate(-50%,-50%) scale(1)!important;opacity:1!important}
-@media(max-width:560px){.guide .pin{width:22px;height:22px;font-size:12px}.guide .spec td:first-child{white-space:normal}.guide .legend li{grid-template-columns:38px 1fr}}
+@media(max-width:560px){.guide .spec td:first-child{white-space:normal}.guide .curx svg{width:24px;height:32px}}
 @media(prefers-reduced-motion:reduce){
-  .guide .pin::after{animation:none}
-  .guide.js figure:not(.seen) .pin{transform:translate(-50%,-50%) scale(1);opacity:1}
-  .guide .pin,.guide details>div,.g-bar{transition:none;animation:none}
+  .guide figure .curx,.guide figure .curx::after{animation:none!important}
+  .guide figure .curx{left:var(--x1);top:var(--y1);opacity:1}
+  .guide details>div,.g-bar{transition:none;animation:none}
   html{scroll-behavior:auto}
 }
 `;
@@ -173,26 +182,14 @@ const JS = `(function(){
     else { var a=document.createElement('textarea'); a.value=t; document.body.appendChild(a); a.select(); try{document.execCommand('copy');ok();}catch(_){} a.remove(); }
   });
 
-  // pins: stagger delay, legend <-> pin highlighting, spring-in on scroll
+  // cursors start travelling once their figure scrolls into view
   var figs=[].slice.call(root.querySelectorAll('figure'));
-  figs.forEach(function(fig){
-    var pins=[].slice.call(fig.querySelectorAll('.pin'));
-    pins.forEach(function(p,i){
-      p.style.setProperty('--d',(i*0.09+0.12)+'s');
-      var l=p.style.left; if(l&&l.indexOf('%')>0) p.style.left='clamp(14px,'+l+',calc(100% - 14px))';
-    });
-    [].slice.call(fig.querySelectorAll('.legend li')).forEach(function(li,i){
-      function on(){ fig.classList.add('hl'); if(pins[i]) pins[i].classList.add('on'); }
-      function off(){ fig.classList.remove('hl'); pins.forEach(function(p){p.classList.remove('on');}); }
-      li.addEventListener('mouseenter',on); li.addEventListener('mouseleave',off);
-    });
-  });
   if('IntersectionObserver' in window && !reduce){
     var fio=new IntersectionObserver(function(es){ es.forEach(function(en){ if(en.isIntersecting){ en.target.classList.add('seen'); fio.unobserve(en.target); } }); },{threshold:.35});
     figs.forEach(function(f){ fio.observe(f); });
   } else { figs.forEach(function(f){ f.classList.add('seen'); }); }
 
-  // lightbox (clone the frame; pins use %, so they stay aligned)
+  // lightbox (clone the frame; cursor positions use %, so they stay aligned)
   var lb=document.createElement('dialog'); lb.className='guide-dialog'; lb.setAttribute('aria-label','Enlarged screenshot'); document.body.appendChild(lb);
   function open(frame){
     lb.innerHTML=''; var c=frame.cloneNode(true);
