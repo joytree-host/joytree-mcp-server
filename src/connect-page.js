@@ -107,11 +107,11 @@ html[data-theme="dark"] .connect-card{box-shadow:0 24px 48px -24px rgba(0,0,0,.7
 .connect-card p{color:var(--text-dim)}
 .connect-card input[type=password]{height:46px;font-size:16px}
 .connect-card .jt-btn.block{height:44px}
-.page.full .grid-cards{grid-template-columns:1fr;gap:16px}
+.page.full .grid-cards{grid-template-columns:1fr;gap:1px}
 @media(min-width:620px){.page.full .grid-cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(min-width:980px){.page.full .grid-cards{grid-template-columns:repeat(3,minmax(0,1fr))}}
-.page.full .grid-card{padding:20px;transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}
-.page.full .grid-card:hover{transform:translateY(-3px);border-color:var(--border-hi);box-shadow:0 14px 28px -18px rgba(31,35,40,.35)}
+.page.full .grid-card{padding:22px 20px;transition:background .2s ease}
+.page.full .grid-card:hover{background:var(--bg-sunken)}
 .page.full .stat{padding:20px 26px}
 .page.full .stat b{font-size:30px}
 @media(max-width:480px){.page.full .stat{padding:12px}.page.full .stat b{font-size:17px}}

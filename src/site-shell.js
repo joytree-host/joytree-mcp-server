@@ -93,9 +93,9 @@ code{font-family:var(--font-mono);font-size:85%;background:var(--code-inline);pa
 .agent.inv svg path{fill:var(--bg)}
 
 /* Cards */
-.grid-cards{display:grid;grid-template-columns:1fr;gap:16px;margin:0}
+.grid-cards{display:grid;grid-template-columns:1fr;gap:1px;margin:0;background:var(--border);border:1px solid var(--border);border-radius:var(--radius-card);overflow:hidden}
 @media(min-width:700px){.grid-cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
-.grid-card{border:1px solid var(--border);border-radius:var(--radius-card);padding:16px;background:var(--bg-raised);display:block}
+.grid-card{padding:16px;background:var(--bg-raised);display:block}
 .grid-card .gc-icon{color:var(--text-dim);margin-bottom:12px;display:flex}
 .grid-card p{margin:0 0 10px;font-size:14px;color:var(--text-dim);line-height:1.5}
 .grid-card code{font-size:12px}
