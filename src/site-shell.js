@@ -4,6 +4,7 @@
 // headings, sunken topbar with a theme toggle, bordered 6px cards, emerald
 // accent, Light is the default, dark is selectable.
 const { LOGO_DATA_URI } = require('./assets/logo');
+const { siteFooter, SITE_FOOTER_CSS } = require('./site-footer');
 
 const CSS = `
 :root{
@@ -149,7 +150,7 @@ function renderShell({ title, description, main, baseUrl, wide = false, extraCss
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&display=swap">
 <script>${THEME_BOOT}</script>
-<style>${CSS}${extraCss}</style></head>
+<style>${CSS}${SITE_FOOTER_CSS}${extraCss}</style></head>
 <body>
 <header class="topbar"><div class="topbar-inner">
   <a href="${base}" class="brand" target="_blank" rel="noopener"><span class="brand-mark" aria-hidden="true"><img src="${LOGO_DATA_URI}" alt="" width="24" height="24"></span><span class="brand-name">JOYTREE<span class="brand-dot">mcp</span></span></a>
@@ -164,8 +165,8 @@ function renderShell({ title, description, main, baseUrl, wide = false, extraCss
 </div></header>
 <main class="page${wide ? ' wide' : ''}${wide === 'full' ? ' full' : ''}">
 ${main}
-<footer class="foot"><span>&copy; JOYTREE</span><span><a href="${base}" target="_blank" rel="noopener">joytree.site</a></span></footer>
 </main>
+${siteFooter(base)}
 <script>${THEME_TOGGLE}</script>
 ${extraScript ? `<script>${extraScript}</script>` : ''}
 </body></html>`;
