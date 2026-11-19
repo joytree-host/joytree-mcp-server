@@ -1,6 +1,7 @@
 'use strict';
 
 const express = require('express');
+const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 const { McpServer } = require('@modelcontextprotocol/sdk/server/mcp.js');
@@ -117,6 +118,23 @@ app.get('/health', (_req, res) => res.status(200).json({
 // /authorize renders the same page with the API-key form; here (plain site)
 // the card shows the connector address instead. /guide is kept as a redirect
 // so old links land on the guide section of the combined page.
+// Site icons: the same JOYTREE logo as joytree.site (tabs, bookmarks, home-screen shortcuts).
+const ICON_DIR = path.join(__dirname, 'assets', 'icons');
+const ICON_FILES = {
+  '/favicon.ico': ['favicon.ico', 'image/x-icon'],
+  '/favicon-32.png': ['favicon-32.png', 'image/png'],
+  '/icon-192.png': ['icon-192.png', 'image/png'],
+  '/icon-512.png': ['icon-512.png', 'image/png'],
+  '/apple-touch-icon.png': ['apple-touch-icon.png', 'image/png'],
+  '/apple-touch-icon-precomposed.png': ['apple-touch-icon.png', 'image/png'],
+};
+const ICON_CACHE = {};
+app.get(Object.keys(ICON_FILES), (req, res) => {
+  const [file, type] = ICON_FILES[req.path];
+  if (!ICON_CACHE[file]) ICON_CACHE[file] = fs.readFileSync(path.join(ICON_DIR, file));
+  res.status(200).set({ 'Content-Type': type, 'Cache-Control': 'public, max-age=86400' }).send(ICON_CACHE[file]);
+});
+
 app.get('/', (_req, res) => {
   res.status(200).set({
     'Content-Type': 'text/html; charset=utf-8',

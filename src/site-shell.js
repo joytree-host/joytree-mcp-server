@@ -8,8 +8,8 @@ const { siteFooter, SITE_FOOTER_CSS } = require('./site-footer');
 
 const CSS = `
 :root{
-  --font-body:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans",Helvetica,Arial,sans-serif;
-  --font-display:"Source Serif 4","Iowan Old Style","Palatino Linotype",Georgia,"Noto Serif",serif;
+  --font-body:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans",Helvetica,Arial,sans-serif;
+  --font-display:var(--font-body);
   --font-mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
   --bg:#ffffff;--bg-raised:#ffffff;--bg-sunken:#f6f8fa;--bg-inset:#eaeef2;
   --bg-hover:rgba(208,215,222,.32);
@@ -63,7 +63,7 @@ svg[hidden]{display:none}
 @media(max-width:480px){.page{padding:18px 16px 44px}}
 .eyebrow{font-size:14px;font-weight:600;color:var(--text-dim);margin:0 0 10px}
 .hero{padding-bottom:28px;border-bottom:1px solid var(--border-soft)}
-h1{font-family:var(--font-display);color:var(--text);font-size:clamp(34px,5.4vw,48px);font-weight:600;line-height:1.08;letter-spacing:-.02em;margin:0 0 14px}
+h1{font-family:var(--font-display);color:var(--text);font-size:clamp(34px,5.4vw,48px);font-weight:700;line-height:1.08;letter-spacing:-.03em;margin:0 0 14px}
 .lede{font-size:18px;color:var(--text-dim);margin:0;max-width:62ch}
 @media(max-width:480px){.lede{font-size:16px}}
 .hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
@@ -75,7 +75,7 @@ h1{font-family:var(--font-display);color:var(--text);font-size:clamp(34px,5.4vw,
 .jt-btn.ghost{background:var(--bg-raised);color:var(--text);border-color:var(--border-hi);box-shadow:0 2px 0 var(--border)}
 .jt-btn.ghost:hover{background:var(--bg-hover);border-color:var(--border-hi);box-shadow:0 2px 0 var(--border-hi)}
 @media(prefers-reduced-motion:reduce){.jt-btn{transition:none}}
-h2{font-family:var(--font-display);font-size:24px;font-weight:600;line-height:1.25;margin:40px 0 16px;padding-bottom:8px;border-bottom:1px solid var(--border-soft);scroll-margin-top:calc(var(--topbar-h) + 16px)}
+h2{font-family:var(--font-display);font-size:24px;font-weight:600;line-height:1.25;letter-spacing:-.015em;margin:40px 0 16px;padding-bottom:8px;border-bottom:1px solid var(--border-soft);scroll-margin-top:calc(var(--topbar-h) + 16px)}
 h3{margin:0 0 4px;font-size:16px;font-weight:600}
 p{margin:0 0 12px}
 a.md-link,.page p a{color:var(--link);font-weight:500}
@@ -145,10 +145,13 @@ function renderShell({ title, description, main, baseUrl, wide = false, extraCss
 <meta name="theme-color" content="#f6f8fa">
 <title>${title}</title>
 <meta name="description" content="${description}">
-<link rel="icon" type="image/png" href="${LOGO_DATA_URI}">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png?v=1">
+<link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png?v=1">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=1">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
 <script>${THEME_BOOT}</script>
 <style>${CSS}${SITE_FOOTER_CSS}${extraCss}</style></head>
 <body>
