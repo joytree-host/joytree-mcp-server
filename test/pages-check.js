@@ -6,7 +6,7 @@ const { PRIVACY_POLICY_HTML } = require('../src/privacy-policy');
 const connect = renderConnectPage({ baseUrl: 'https://joytree.site', fields: '<input type="hidden" name="state" value="x">' });
 for (const [name, html] of [['connect', connect], ['privacy', PRIVACY_POLICY_HTML]]) {
   assert.ok(!/JoyTree/.test(html), name + ': writing must be JOYTREE, not JoyTree');
-  assert.ok(html.includes('family=Inter') && !html.includes('Source+Serif') && !/Georgia|Iowan Old Style/.test(html), name + ': same Inter sans as joytree.site, no serif');
+  assert.ok(html.includes('Source+Serif+4'), name + ': docs serif font');
   assert.ok(html.includes('rel="apple-touch-icon"') && html.includes('/favicon.ico'), name + ': real logo icons linked');
   assert.ok(html.includes('id="themeToggle"') && !html.includes('jt-leaves-fall'), name + ': topbar toggle, no falling leaves');
   assert.ok(html.includes('JOYTREE<span class="brand-dot">mcp</span>'), name + ': brand');
